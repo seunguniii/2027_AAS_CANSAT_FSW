@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version="1.8">
+  <model name="rocket_system">
+    <include>
+      <uri>model://rocket_base</uri>
+      <name>rocket_base</name>
+    </include>
+    
+    <include>
+      <uri>model://rocket_cone</uri>
+      <name>rocket_cone</name>
+      <pose>0 0 1.0644 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://container</uri>
+      <name>container</name>
+      <pose>0 0 0.75 0 0 0</pose>
+    </include>
+    
+    <include>
+      <uri>model://pocket_qube</uri>
+      <name>pocket_qube</name>
+      <pose>0 0 0.75 0 0 0</pose>
+    </include>    
+  </model>
+</sdf>

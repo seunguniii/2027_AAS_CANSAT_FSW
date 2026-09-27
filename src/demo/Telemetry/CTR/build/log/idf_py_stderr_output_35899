@@ -1,0 +1,23 @@
+Command: /home/sujin/.espressif/tools/python/v6.1/venv/bin/python /home/sujin/.espressif/v6.1/esp-idf/tools/idf_monitor.py -p /dev/ttyACM0 -b 115200 --toolchain-prefix xtensa-esp32s3-elf- --target esp32s3 --revision 0 /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/build/GS.elf /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/build/bootloader/bootloader.elf -m '/home/sujin/.espressif/tools/python/v6.1/venv/bin/python' '/home/sujin/.espressif/v6.1/esp-idf/tools/idf.py' '-p' '/dev/ttyACM0'
+--- esp-idf-monitor 1.10.0 on /dev/ttyACM0 115200
+--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H
+--- 0x40048836: uart_tx_one_char_uart in ROM
+--- 0x403c8700: _stext at ??:?
+--- 0x403c8904: call_start_cpu0 at /home/sujin/.espressif/v6.1/esp-idf/components/bootloader/subproject/main/bootloader_start.c:27
+--- 0x4200d70f: esp_now_add_peer at ??:?
+--- 0x400556d5: strlen in ROM
+--- 0x400556e5: strlen in ROM
+--- 0x4200d70c: esp_now_add_peer at ??:?
+--- 0x4200ae22: Msg::detail::(anonymous namespace)::ensurePeer(MCU::ID) at /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/msg/MsgESPNOW.cpp:75
+--- 0x4200ae5a: Msg::detail::sendESPNOWPacket(Msg::Packet const&) at /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/msg/MsgESPNOW.cpp:153
+--- 0x4200acf1: Msg::detail::sendPacket(Msg::Packet const&) at /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/msg/Msg.cpp:30
+--- 0x4200aab9: bool Msg::Node::send<Telemetry::CTR>(Telemetry::CTR const&, Node::Address) const at /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/include/Msg.h:70
+--- 0x4200ab05: Telemetry::sendCTR(Msg::Node const&, Msg::Node const&, Sensor::Barometer const&, Sensor::PowerMonitor const&, FlightMode, CTR_OpState, unsigned char) at /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/telemetry/CTR.cpp:65
+--- 0x4200a8a9: main at /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/main/app_main.cpp:58
+--- 0x4200a8bf: app_main at /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/main/app_main.cpp:79
+--- 0x42007aab: main_task at /home/sujin/.espressif/v6.1/esp-idf/components/freertos/app_startup.c:206
+--- 0x42037c1a: vPortTaskWrapper at /home/sujin/.espressif/v6.1/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:147
+--- 0x4037ac19: esp_restart_noos at /home/sujin/.espressif/v6.1/esp-idf/components/esp_system/port/soc/esp32s3/system_internal.c:171
+--- 0x403c8700: _stext at ??:?
+--- 0x403c8904: call_start_cpu0 at /home/sujin/.espressif/v6.1/esp-idf/components/bootloader/subproject/main/bootloader_start.c:27
+

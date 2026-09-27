@@ -1,0 +1,6 @@
+-mlongcalls
+-fno-builtin-memcpy
+-fno-builtin-memset
+-fno-builtin-bzero
+"-specs=/home/sujin/2027_CANSAT/src/demo/Telemetry/GS/build/specs/picolibc.specs"
+-fno-rtti

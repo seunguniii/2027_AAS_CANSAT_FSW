@@ -1,0 +1,2 @@
+source /home/sujin/2027_CANSAT/src/demo/Telemetry/PQ/build/bootloader/gdbinit/symbols
+source /home/sujin/2027_CANSAT/src/demo/Telemetry/PQ/build/bootloader/gdbinit/connect

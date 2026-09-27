@@ -1,0 +1,8 @@
+Command: ninja all
+[1/4] cd /home/sujin/2027_CANSAT/src/demo/Telemetry/PQ/build && /home/sujin/.espressif/tools/python/v6.1/venv/bin/python /home/sujin/.espressif/v6.1/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/sujin/2027_CANSAT/src/demo/Telemetry/PQ/build/partition_table/partition-table.bin /home/sujin/2027_CANSAT/src/demo/Telemetry/PQ/build/PQ.bin
+PQ.bin binary size 0xe3390 bytes. Smallest app partition is 0x100000 bytes. 0x1cc70 bytes (11%) free.
+[2/4] Performing build step for 'bootloader'
+[1/1] cd /home/sujin/2027_CANSAT/src/demo/Telemetry/PQ/build/bootloader && /home/sujin/.espressif/tools/python/v6.1/venv/bin/python /home/sujin/.espressif/v6.1/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x0 /home/sujin/2027_CANSAT/src/demo/Telemetry/PQ/build/bootloader/bootloader.bin
+Bootloader binary size 0x5280 bytes. 0x2d80 bytes (36%) free.
+[3/4] No install step for 'bootloader'
+[4/4] Completed 'bootloader'

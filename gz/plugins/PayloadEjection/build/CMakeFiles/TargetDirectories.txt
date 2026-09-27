@@ -1,0 +1,3 @@
+/home/sujin/2027_CANSAT/gz/plugins/PayloadEjection/build/CMakeFiles/PayloadEjection.dir
+/home/sujin/2027_CANSAT/gz/plugins/PayloadEjection/build/CMakeFiles/edit_cache.dir
+/home/sujin/2027_CANSAT/gz/plugins/PayloadEjection/build/CMakeFiles/rebuild_cache.dir

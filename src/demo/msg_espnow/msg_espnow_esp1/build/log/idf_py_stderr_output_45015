@@ -1,0 +1,17 @@
+Command: ninja all
+CMake Error at /home/sujin/.espressif/v6.1/esp-idf/tools/cmakev2/compat.cmake:693 (add_library):
+  Cannot find source file:
+
+    /home/sujin/2027_CANSAT/src/demo/msg_espnow_esp1/src/src/msg_local.cpp
+Call Stack (most recent call first):
+  main/CMakeLists.txt:1 (idf_component_register)
+
+
+CMake Error at /home/sujin/.espressif/v6.1/esp-idf/tools/cmakev2/compat.cmake:693 (add_library):
+  No SOURCES given to target: _idf_main
+Call Stack (most recent call first):
+  main/CMakeLists.txt:1 (idf_component_register)
+
+
+CMake Generate step failed.  Build files cannot be regenerated correctly.
+ninja: error: rebuilding 'build.ninja': subcommand failed

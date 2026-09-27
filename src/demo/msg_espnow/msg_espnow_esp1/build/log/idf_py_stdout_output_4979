@@ -1,0 +1,293 @@
+Command: /home/sujin/.espressif/tools/python/v6.1/venv/bin/python /home/sujin/.espressif/v6.1/esp-idf/tools/idf_monitor.py -p /dev/ttyACM1 -b 115200 --toolchain-prefix xtensa-esp32s3-elf- --target esp32s3 --revision 0 /home/sujin/2027_CANSAT/src/demo/msg_espnow_esp1/src/build/msg_espnow_esp1.elf /home/sujin/2027_CANSAT/src/demo/msg_espnow_esp1/src/build/bootloader/bootloader.elf -m '/home/sujin/.espressif/tools/python/v6.1/venv/bin/python' '/home/sujin/.espressif/v6.1/esp-idf/tools/idf.py' '-p' '/dev/ttyACM1'
+[0;32mI (243) esp_image: segment 3: paddr=000db3c8 vaddr=3fc99700 sizeESP-ROM:esp32s3-20210327[0m
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0x8 (SPI_FAST_FLASH_BOOT)
+Saved PC:0x4037b742
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x14f0
+load:0x403c8700,len:0xde4
+load:0x403cb700,len:0x2f58
+entry 0x403c88fc
+[0;32mI (24) boot: ESP-IDF v6.1 2nd stage bootloader[0m
+[0;32mI (24) boot: compile time Sep 20 2026 05:56:42[0m
+[0;32mI (25) boot: Multicore bootloader[0m
+[0;32mI (25) boot: chip revision: v0.2[0m
+[0;32mI (27) boot: efuse block revision: v1.4[0m
+[0;32mI (31) boot.esp32s3: Boot SPI Speed : 80MHz[0m
+[0;32mI (35) boot.esp32s3: SPI Mode       : DIO[0m
+[0;32mI (39) boot.esp32s3: SPI Flash Size : 2MB[0m
+[0;32mI (42) boot: Enabling RNG early entropy source...[0m
+[0;32mI (47) boot: Partition Table:[0m
+[0;32mI (49) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (62) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (69) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (75) boot: End of partition table[0m
+[0;32mI (79) esp_image: segment 0: paddr=00010020 vaddr=3c0b0020 size=1e3f0h (123888) map[0m
+[0;32mI (109) esp_image: segment 1: paddr=0002e418 vaddr=3fc97b00 size=01c00h (  7168) load[0m
+[0;32mI (111) esp_image: segment 2: paddr=00030020 vaddr=42000020 size=ab3a0h (701344) map[0m
+[0;32mI (240) esp_image: segment 3: paddr=000db3c8 vaddr=3fc99700 size=03624h ( 13860) load[0m
+[0;32mI (244) esp_image: segment 4: paddr=000de9f4 vaddr=40374000 size=13ad0h ( 80592) load[0m
+[0;32mI (263) esp_image: segment 5: paddr=000f24cc vaddr=50000000 size=00024h (    36) load[0m
+[0;32mI (272) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (272) boot: Disabling RNG early entropy source...[0m
+[0;32mI (282) cpu_start: Multicore app[0m
+[0;32mI (290) cpu_start: GPIO 44 and 43 are used as console UART I/O pins[0m
+[0;32mI (291) cpu_start: Pro cpu start user code[0m
+[0;32mI (291) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (293) app_init: Application information:[0m
+[0;32mI (296) app_init: Project name:     msg_espnow_esp1[0m
+[0;32mI (301) app_init: App version:      1[0m
+[0;32mI (304) app_init: Compile time:     Sep 20 2026 06:08:21[0m
+[0;32mI (309) app_init: ELF file SHA256:  c54995f6d...[0m
+[0;32mI (314) app_init: ESP-IDF:          v6.1[0m
+[0;32mI (317) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (321) efuse_init: Max chip rev:     v0.99 [0m
+[0;32mI (325) efuse_init: Chip rev:         v0.2[0m
+[0;32mI (329) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (335) heap_init: At 3FCA6B70 len 00042BA0 (266 KiB): RAM[0m
+[0;32mI (341) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM[0m
+[0;32mI (346) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM[0m
+[0;32mI (351) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM[0m
+[0;32mI (357) spi_flash: detected chip: boya[0m
+[0;32mI (360) spi_flash: flash io: dio[0m
+[0;33mW (363) spi_flash: Detected size(16384k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;32mI (377) sleep_gpio: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (381) sleep_gpio: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (388) main_task: Started on CPU0[0m
+[0;32mI (388) main_task: Calling app_main()[0m
+[ESP-NOW] Initializing...
+[0;32mI (408) pp: pp rom version: e7ae62f[0m
+[0;32mI (408) net80211: net80211 rom version: e7ae62f[0m
+[0;32mI (418) wifi:wifi driver task: 3fcee688, prio:23, stack:6656, core=0[0m
+[0;32mI (418) wifi:wifi firmware version: e12a754[0m
+[0;32mI (418) wifi:wifi certification version: v7.0[0m
+[0;32mI (418) wifi:config NVS flash: enabled[0m
+[0;32mI (418) wifi:config nano formatting: disabled[0m
+[0;32mI (428) wifi:Init data frame dynamic rx buffer num: 32[0m
+[0;32mI (428) wifi:Init static rx mgmt buffer num: 5[0m
+[0;32mI (438) wifi:Init management short buffer num: 32[0m
+[0;32mI (438) wifi:Init dynamic tx buffer num: 32[0m
+[0;32mI (438) wifi:Init static tx FG buffer num: 2[0m
+[0;32mI (448) wifi:Init static rx buffer size: 1600[0m
+[0;32mI (448) wifi:Init static rx buffer num: 10[0m
+[0;32mI (458) wifi:Init dynamic rx buffer num: 32[0m
+[0;32mI (458) wifi_init: rx ba win: 6[0m
+[0;32mI (458) wifi_init: accept mbox: 6[0m
+[0;32mI (468) wifi_init: tcpip mbox: 32[0m
+[0;32mI (468) wifi_init: udp mbox: 6[0m
+[0;32mI (468) wifi_init: tcp mbox: 6[0m
+[0;32mI (478) wifi_init: tcp tx win: 5760[0m
+[0;32mI (478) wifi_init: tcp rx win: 5760[0m
+[0;32mI (478) wifi_init: tcp mss: 1440[0m
+[0;32mI (478) wifi_init: WiFi IRAM OP enabled[0m
+[0;32mI (488) wifi_init: WiFi RX IRAM OP enabled[0m
+[0;32mI (488) phy_init: phy_version 712,87e8c20e,Apr 13 2026,18:51:10[0m
+[0;32mI (538) wifi:mode : sta (44:1b:f6:fd:b6:04)[0m
+[0;32mI (538) wifi:enable tsf[0m
+[0;32mI (538) ESPNOW: espnow [version: 2.0] init[0m
+[ESP-NOW] Initialization successful.
+[ESP-NOW] UINT8 ERROR i=0 expected=0 received=1
+[ESP-NOW] FLOAT ERROR i=0 expected=0.5 received=1.5
+[ESP-NOW] UINT8 ERROR i=1 expected=1 received=2
+[ESP-NOW] FLOAT ERROR i=1 expected=1.5 received=2.5
+[ESP-NOW] UINT8 ERROR i=2 expected=2 received=3
+[ESP-NOW] FLOAT ERROR i=2 expected=2.5 received=3.5
+[ESP-NOW] UINT8 ERROR i=3 expected=3 received=4
+[ESP-NOW] FLOAT ERROR i=3 expected=3.5 received=4.5
+[ESP-NOW] UINT8 ERROR i=4 expected=4 received=5
+[ESP-NOW] FLOAT ERROR i=4 expected=4.5 received=5.5
+[ESP-NOW] UINT8 ERROR i=5 expected=5 received=6
+[ESP-NOW] FLOAT ERROR i=5 expected=5.5 received=6.5
+[ESP-NOW] UINT8 ERROR i=6 expected=6 received=7
+[ESP-NOW] FLOAT ERROR i=6 expected=6.5 received=7.5
+[ESP-NOW] UINT8 ERROR i=7 expected=7 received=8
+[ESP-NOW] FLOAT ERROR i=7 expected=7.5 received=8.5
+[ESP-NOW] UINT8 ERROR i=8 expected=8 received=9
+[ESP-NOW] FLOAT ERROR i=8 expected=8.5 received=9.5
+[ESP-NOW] UINT8 ERROR i=9 expected=9 received=10
+[ESP-NOW] FLOAT ERROR i=9 expected=9.5 received=10.5
+[ESP-NOW] UINT8 ERROR i=10 expected=10 received=11
+[ESP-NOW] FLOAT ERROR i=10 expected=10.5 received=11.5
+[ESP-NOW] UINT8 ERROR i=11 expected=11 received=12
+[ESP-NOW] FLOAT ERROR i=11 expected=11.5 received=12.5
+[ESP-NOW] UINT8 ERROR i=12 expected=12 received=13
+[ESP-NOW] FLOAT ERROR i=12 expected=12.5 received=13.5
+[ESP-NOW] UINT8 ERROR i=13 expected=13 received=14
+[ESP-NOW] FLOAT ERROR i=13 expected=13.5 received=14.5
+[ESP-NOW] UINT8 ERROR i=14 expected=14 received=15
+[ESP-NOW] FLOAT ERROR i=14 expected=14.5 received=15.5
+[ESP-NOW] UINT8 ERROR i=15 expected=15 received=16
+[ESP-NOW] FLOAT ERROR i=15 expected=15.5 received=16.5
+[ESP-NOW] UINT8 ERROR i=16 expected=16 received=17
+[ESP-NOW] FLOAT ERROR i=16 expected=16.5 received=17.5
+[ESP-NOW] UINT8 ERROR i=17 expected=17 received=18
+[ESP-NOW] FLOAT ERROR i=17 expected=17.5 received=18.5
+[ESP-NOW] UINT8 ERROR i=18 expected=18 received=19
+[ESP-NOW] FLOAT ERROR i=18 expected=18.5 received=19.5
+[ESP-NOW] UINT8 ERROR i=19 expected=19 received=20
+[ESP-NOW] FLOAT ERROR i=19 expected=19.5 received=20.5
+[ESP-NOW] UINT8 ERROR i=20 expected=20 received=21
+[ESP-NOW] FLOAT ERROR i=20 expected=20.5 received=21.5
+[ESP-NOW] UINT8 ERROR i=21 expected=21 received=22
+[ESP-NOW] FLOAT ERROR i=21 expected=21.5 received=22.5
+[ESP-NOW] UINT8 ERROR i=22 expected=22 received=23
+[ESP-NOW] FLOAT ERROR i=22 expected=22.5 received=23.5
+[ESP-NOW] UINT8 ERROR i=23 expected=23 received=24
+[ESP-NOW] FLOAT ERROR i=23 expected=23.5 received=24.5
+[ESP-NOW] UINT8 ERROR i=24 expected=24 received=25
+[ESP-NOW] FLOAT ERROR i=24 expected=24.5 received=25.5
+[ESP-NOW] UINT8 ERROR i=25 expected=25 received=26
+[ESP-NOW] FLOAT ERROR i=25 expected=25.5 received=26.5
+[ESP-NOW] UINT8 ERROR i=26 expected=26 received=27
+[ESP-NOW] FLOAT ERROR i=26 expected=26.5 received=27.5
+[ESP-NOW] UINT8 ERROR i=27 expected=27 received=28
+[ESP-NOW] FLOAT ERROR i=27 expected=27.5 received=28.5
+[ESP-NOW] UINT8 ERROR i=28 expected=28 received=29
+[ESP-NOW] FLOAT ERROR i=28 expected=28.5 received=29.5
+[ESP-NOW] UINT8 ERROR i=29 expected=29 received=30
+[ESP-NOW] FLOAT ERROR i=29 expected=29.5 received=30.5
+[ESP-NOW] UINT8 ERROR i=30 expected=30 received=31
+[ESP-NOW] FLOAT ERROR i=30 expected=30.5 received=31.5
+[ESP-NOW] UINT8 ERROR i=31 expected=31 received=32
+[ESP-NOW] FLOAT ERROR i=31 expected=31.5 received=32.5
+[ESP-NOW] UINT8 ERROR i=32 expected=32 received=33
+[ESP-NOW] FLOAT ERROR i=32 expected=32.5 received=33.5
+[ESP-NOW] UINT8 ERROR i=33 expected=33 received=34
+[ESP-NOW] FLOAT ERROR i=33 expected=33.5 received=34.5
+[ESP-NOW] UINT8 ERROR i=34 expected=34 received=35
+[ESP-NOW] FLOAT ERROR i=34 expected=34.5 received=35.5
+[ESP-NOW] UINT8 ERROR i=35 expected=35 received=36
+[ESP-NOW] FLOAT ERROR i=35 expected=35.5 received=36.5
+[ESP-NOW] UINT8 ERROR i=36 expected=36 received=37
+[ESP-NOW] FLOAT ERROR i=36 expected=36.5 received=37.5
+[ESP-NOW] UINT8 ERROR i=37 expected=37 received=38
+[ESP-NOW] FLOAT ERROR i=37 expected=37.5 received=38.5
+[ESP-NOW] UINT8 ERROR i=38 expected=38 received=39
+[ESP-NOW] FLOAT ERROR i=38 expected=38.5 received=39.5
+[ESP-NOW] UINT8 ERROR i=39 expected=39 received=40
+[ESP-NOW] FLOAT ERROR i=39 expected=39.5 received=40.5
+[ESP-NOW] UINT8 ERROR i=40 expected=40 received=41
+[ESP-NOW] FLOAT ERROR i=40 expected=40.5 received=41.5
+[ESP-NOW] UINT8 ERROR i=41 expected=41 received=42
+[ESP-NOW] FLOAT ERROR i=41 expected=41.5 received=42.5
+[ESP-NOW] UINT8 ERROR i=42 expected=42 received=43
+[ESP-NOW] FLOAT ERROR i=42 expected=42.5 received=43.5
+[ESP-NOW] UINT8 ERROR i=43 expected=43 received=44
+[ESP-NOW] FLOAT ERROR i=43 expected=43.5 received=44.5
+[ESP-NOW] UINT8 ERROR i=44 expected=44 received=45
+[ESP-NOW] FLOAT ERROR i=44 expected=44.5 received=45.5
+[ESP-NOW] UINT8 ERROR i=45 expected=45 received=46
+[ESP-NOW] FLOAT ERROR i=45 expected=45.5 received=46.5
+[ESP-NOW] UINT8 ERROR i=46 expected=46 received=47
+[ESP-NOW] FLOAT ERROR i=46 expected=46.5 received=47.5
+[ESP-NOW] UINT8 ERROR i=47 expected=47 received=48
+[ESP-NOW] FLOAT ERROR i=47 expected=47.5 received=48.5
+[ESP-NOW] UINT8 ERROR i=48 expected=48 received=49
+[ESP-NOW] FLOAT ERROR i=48 expected=48.5 received=49.5
+[ESP-NOW] UINT8 ERROR i=49 expected=49 received=50
+[ESP-NOW] FLOAT ERROR i=49 expected=49.5 received=50.5
+[ESP-NOW] UINT8 ERROR i=50 expected=50 received=51
+[ESP-NOW] FLOAT ERROR i=50 expected=50.5 received=51.5
+[ESP-NOW] UINT8 ERROR i=51 expected=51 received=52
+[ESP-NOW] FLOAT ERROR i=51 expected=51.5 received=52.5
+[ESP-NOW] UINT8 ERROR i=52 expected=52 received=53
+[ESP-NOW] FLOAT ERROR i=52 expected=52.5 received=53.5
+[ESP-NOW] UINT8 ERROR i=53 expected=53 received=54
+[ESP-NOW] FLOAT ERROR i=53 expected=53.5 received=54.5
+[ESP-NOW] UINT8 ERROR i=54 expected=54 received=55
+[ESP-NOW] FLOAT ERROR i=54 expected=54.5 received=55.5
+[ESP-NOW] UINT8 ERROR i=55 expected=55 received=56
+[ESP-NOW] FLOAT ERROR i=55 expected=55.5 received=56.5
+[ESP-NOW] UINT8 ERROR i=56 expected=56 received=57
+[ESP-NOW] FLOAT ERROR i=56 expected=56.5 received=57.5
+[ESP-NOW] UINT8 ERROR i=57 expected=57 received=58
+[ESP-NOW] FLOAT ERROR i=57 expected=57.5 received=58.5
+[ESP-NOW] UINT8 ERROR i=58 expected=58 received=59
+[ESP-NOW] FLOAT ERROR i=58 expected=58.5 received=59.5
+[ESP-NOW] UINT8 ERROR i=59 expected=59 received=60
+[ESP-NOW] FLOAT ERROR i=59 expected=59.5 received=60.5
+[ESP-NOW] UINT8 ERROR i=60 expected=60 received=61
+[ESP-NOW] FLOAT ERROR i=60 expected=60.5 received=61.5
+[ESP-NOW] UINT8 ERROR i=61 expected=61 received=62
+[ESP-NOW] FLOAT ERROR i=61 expected=61.5 received=62.5
+[ESP-NOW] UINT8 ERROR i=62 expected=62 received=63
+[ESP-NOW] FLOAT ERROR i=62 expected=62.5 received=63.5
+[ESP-NOW] UINT8 ERROR i=63 expected=63 received=64
+[ESP-NOW] FLOAT ERROR i=63 expected=63.5 received=64.5
+[ESP-NOW] UINT8 ERROR i=64 expected=64 received=65
+[ESP-NOW] FLOAT ERROR i=64 expected=64.5 received=65.5
+[ESP-NOW] UINT8 ERROR i=65 expected=65 received=66
+[ESP-NOW] FLOAT ERROR i=65 expected=65.5 received=66.5
+[ESP-NOW] UINT8 ERROR i=66 expected=66 received=67
+[ESP-NOW] FLOAT ERROR i=66 expected=66.5 received=67.5
+[ESP-NOW] UINT8 ERROR i=67 expected=67 received=68
+[ESP-NOW] FLOAT ERROR i=67 expected=67.5 received=68.5
+[ESP-NOW] UINT8 ERROR i=68 expected=68 received=69
+[ESP-NOW] FLOAT ERROR i=68 expected=68.5 received=69.5
+[ESP-NOW] UINT8 ERROR i=69 expected=69 received=70
+[ESP-NOW] FLOAT ERROR i=69 expected=69.5 received=70.5
+[ESP-NOW] UINT8 ERROR i=70 expected=70 received=71
+[ESP-NOW] FLOAT ERROR i=70 expected=70.5 received=71.5
+[ESP-NOW] UINT8 ERROR i=71 expected=71 received=72
+[ESP-NOW] FLOAT ERROR i=71 expected=71.5 received=72.5
+[ESP-NOW] UINT8 ERROR i=72 expected=72 received=73
+[ESP-NOW] FLOAT ERROR i=72 expected=72.5 received=73.5
+[ESP-NOW] UINT8 ERROR i=73 expected=73 received=74
+[ESP-NOW] FLOAT ERROR i=73 expected=73.5 received=74.5
+[ESP-NOW] UINT8 ERROR i=74 expected=74 received=75
+[ESP-NOW] FLOAT ERROR i=74 expected=74.5 received=75.5
+[ESP-NOW] UINT8 ERROR i=75 expected=75 received=76
+[ESP-NOW] FLOAT ERROR i=75 expected=75.5 received=76.5
+[ESP-NOW] UINT8 ERROR i=76 expected=76 received=77
+[ESP-NOW] FLOAT ERROR i=76 expected=76.5 received=77.5
+[ESP-NOW] UINT8 ERROR i=77 expected=77 received=78
+[ESP-NOW] FLOAT ERROR i=77 expected=77.5 received=78.5
+[ESP-NOW] UINT8 ERROR i=78 expected=78 received=79
+[ESP-NOW] FLOAT ERROR i=78 expected=78.5 received=79.5
+[ESP-NOW] UINT8 ERROR i=79 expected=79 received=80
+[ESP-NOW] FLOAT ERROR i=79 expected=79.5 received=80.5
+[ESP-NOW] UINT8 ERROR i=80 expected=80 received=81
+[ESP-NOW] FLOAT ERROR i=80 expected=80.5 received=81.5
+[ESP-NOW] UINT8 ERROR i=81 expected=81 received=82
+[ESP-NOW] FLOAT ERROR i=81 expected=81.5 received=82.5
+[ESP-NOW] UINT8 ERROR i=82 expected=82 received=83
+[ESP-NOW] FLOAT ERROR i=82 expected=82.5 received=83.5
+[ESP-NOW] UINT8 ERROR i=83 expected=83 received=84
+[ESP-NOW] FLOAT ERROR i=83 expected=83.5 received=84.5
+[ESP-NOW] UINT8 ERROR i=84 expected=84 received=85
+[ESP-NOW] FLOAT ERROR i=84 expected=84.5 received=85.5
+[ESP-NOW] UINT8 ERROR i=85 expected=85 received=86
+[ESP-NOW] FLOAT ERROR i=85 expected=85.5 received=86.5
+[ESP-NOW] UINT8 ERROR i=86 expected=86 received=87
+[ESP-NOW] FLOAT ERROR i=86 expected=86.5 received=87.5
+[ESP-NOW] UINT8 ERROR i=87 expected=87 received=88
+[ESP-NOW] FLOAT ERROR i=87 expected=87.5 received=88.5
+[ESP-NOW] UINT8 ERROR i=88 expected=88 received=89
+[ESP-NOW] FLOAT ERROR i=88 expected=88.5 received=89.5
+[ESP-NOW] UINT8 ERROR i=89 expected=89 received=90
+[ESP-NOW] FLOAT ERROR i=89 expected=89.5 received=90.5
+[ESP-NOW] UINT8 ERROR i=90 expected=90 received=91
+[ESP-NOW] FLOAT ERROR i=90 expected=90.5 received=91.5
+[ESP-NOW] UINT8 ERROR i=91 expected=91 received=92
+[ESP-NOW] FLOAT ERROR i=91 expected=91.5 received=92.5
+[ESP-NOW] UINT8 ERROR i=92 expected=92 received=93
+[ESP-NOW] FLOAT ERROR i=92 expected=92.5 received=93.5
+[ESP-NOW] UINT8 ERROR i=93 expected=93 received=94
+[ESP-NOW] FLOAT ERROR i=93 expected=93.5 received=94.5
+[ESP-NOW] UINT8 ERROR i=94 expected=94 received=95
+[ESP-NOW] FLOAT ERROR i=94 expected=94.5 received=95.5
+[ESP-NOW] UINT8 ERROR i=95 expected=95 received=96
+[ESP-NOW] FLOAT ERROR i=95 expected=95.5 received=96.5
+[ESP-NOW] UINT8 ERROR i=96 expected=96 received=97
+[ESP-NOW] FLOAT ERROR i=96 expected=96.5 received=97.5
+[ESP-NOW] UINT8 ERROR i=97 expected=97 received=98
+[ESP-NOW] FLOAT ERROR i=97 expected=97.5 received=98.5
+[ESP-NOW] UINT8 ERROR i=98 expected=98 received=99
+[ESP-NOW] FLOAT ERROR i=98 expected=98.5 received=99.5
+[ESP-NOW] RECEIVE FAILED packet=99
+[ESP-NOW] TEST FAILED
+
+[ESP] msg_test returned 1
+[0;32mI (7518) main_task: Returned from app_main()[0m

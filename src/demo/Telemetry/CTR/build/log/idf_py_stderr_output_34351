@@ -1,0 +1,26 @@
+Command: /home/sujin/.espressif/tools/python/v6.1/venv/bin/python /home/sujin/.espressif/v6.1/esp-idf/tools/idf_monitor.py -p /dev/ttyACM0 -b 115200 --toolchain-prefix xtensa-esp32s3-elf- --target esp32s3 --revision 0 /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/build/GS.elf /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/build/bootloader/bootloader.elf -m '/home/sujin/.espressif/tools/python/v6.1/venv/bin/python' '/home/sujin/.espressif/v6.1/esp-idf/tools/idf.py' '-p' '/dev/ttyACM0'
+--- esp-idf-monitor 1.10.0 on /dev/ttyACM0 115200
+--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H
+--- 0x40379282: esp_cpu_wait_for_intr at /home/sujin/.espressif/v6.1/esp-idf/components/esp_hw_support/cpu.c:64
+--- 0x403c8700: _stext at ??:?
+--- 0x403c8904: call_start_cpu0 at /home/sujin/.espressif/v6.1/esp-idf/components/bootloader/subproject/main/bootloader_start.c:27
+[1;33m--- WARNING:[0m Checksum mismatch between flashed and built applications. Checksum of built application is 3ecdbf62b952e9893c0a7ed959b1ec4e6e3c8cc9042ca45b53c08cf4d7026daa
+--- 0x4200c93c: esp_now_add_peer at ??:?
+--- 0x40056f5c: memcpy in ROM
+--- 0x40056f72: memcpy in ROM
+--- 0x4200c939: esp_now_add_peer at ??:?
+--- 0x42009f84: Msg::detail::(anonymous namespace)::ensurePeer(MCU::ID) at /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/msg/MsgESPNOW.cpp:38
+--- 0x42009fe6: Msg::detail::sendESPNOWPacket(Msg::Packet const&) at /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/msg/MsgESPNOW.cpp:124
+--- 0x42009f05: Msg::detail::sendPacket(Msg::Packet const&) at /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/msg/Msg.cpp:30
+--- 0x42009ccd: bool Msg::Node::send<Telemetry::CTR>(Telemetry::CTR const&, Node::Address) const at /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/include/Msg.h:70
+--- 0x42009d19: Telemetry::sendCTR(Msg::Node const&, Msg::Node const&, Sensor::Barometer const&, Sensor::PowerMonitor const&, FlightMode, CTR_OpState, unsigned char) at /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/telemetry/CTR.cpp:65
+--- 0x42009abd: main at /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/main/app_main.cpp:58
+--- 0x42009ad3: app_main at /home/sujin/2027_CANSAT/src/demo/CTR_Telemetry/CTR/main/app_main.cpp:79
+--- 0x42006fb3: main_task at /home/sujin/.espressif/v6.1/esp-idf/components/freertos/app_startup.c:206
+--- 0x420127e6: vPortCleanUpCoprocArea at /home/sujin/.espressif/v6.1/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:654
+[1;33m--- WARNING:[0m Checksum mismatch between flashed and built applications. Checksum of built application is 3ecdbf62b952e9893c0a7ed959b1ec4e6e3c8cc9042ca45b53c08cf4d7026daa
+--- 0x4037ac01: esp_restart_noos at /home/sujin/.espressif/v6.1/esp-idf/components/esp_system/port/soc/esp32s3/system_internal.c:171
+--- 0x403c8700: _stext at ??:?
+--- 0x403c8904: call_start_cpu0 at /home/sujin/.espressif/v6.1/esp-idf/components/bootloader/subproject/main/bootloader_start.c:27
+--- Multiple stop commands received, forcing quit monitor
+

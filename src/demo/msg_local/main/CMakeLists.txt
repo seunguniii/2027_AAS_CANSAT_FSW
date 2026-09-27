@@ -1,0 +1,10 @@
+idf_component_register(
+    SRCS
+        "app_main.cpp"
+        "../msg/Msg.cpp"
+        "../src/msg_local.cpp"
+    INCLUDE_DIRS
+        "../include"
+    REQUIRES
+        pthread
+)
