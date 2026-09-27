@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
- 
+
 project(PayloadEjection)
 
 find_package(gz-sim8 REQUIRED)

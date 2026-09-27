@@ -1,9 +1,0 @@
-Command: ninja all
-CMake Error at /home/sujin/.espressif/v6.1/esp-idf/tools/cmakev2/utilities.cmake:40 (message):
-   IDF: The component 'main' in the '/home/sujin/2027_CANSAT/src/demo/msg_espnow_esp0/src/main' directory is specifying '/home/sujin/2027_CANSAT/src/demo/msg_espnow_esp0/src/main/REQUIRE' as its include directory, but the directory does not exists.
-Call Stack (most recent call first):
-  /home/sujin/.espressif/v6.1/esp-idf/tools/cmakev2/compat.cmake:686 (idf_die)
-  main/CMakeLists.txt:1 (idf_component_register)
-
-
-ninja: error: rebuilding 'build.ninja': subcommand failed

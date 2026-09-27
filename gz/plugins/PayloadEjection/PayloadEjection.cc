@@ -172,7 +172,7 @@ namespace cansat {
     private: double max_alt_{0.0};
     private: double last_sim_time_{0.0};
     private: double ejection_start_time_{0.0};
-    
+
     //configurable parameters
     private: std::string payload_link_name_{"container_link"};
     private: std::string detach_topic_{"/rocket/container/detach"};

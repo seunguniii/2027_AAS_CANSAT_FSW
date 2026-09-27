@@ -1,3 +1,0 @@
-/home/sujin/2027_CANSAT/gz/plugins/RocketRecovery/build/CMakeFiles/RocketRecovery.dir
-/home/sujin/2027_CANSAT/gz/plugins/RocketRecovery/build/CMakeFiles/edit_cache.dir
-/home/sujin/2027_CANSAT/gz/plugins/RocketRecovery/build/CMakeFiles/rebuild_cache.dir

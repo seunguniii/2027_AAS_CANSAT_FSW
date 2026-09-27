@@ -1,1 +1,0 @@
-Command: cmake -G Ninja -B /home/sujin/2027_CANSAT/src/demo/msg_espnow_esp0/src/build -DPYTHON_DEPS_CHECKED=1 -DPYTHON=/home/sujin/.espressif/tools/python/v6.1/venv/bin/python -DESP_PLATFORM=1 -DIDF_TARGET=esp32s3 -DCCACHE_ENABLE=False /home/sujin/2027_CANSAT/src/demo/msg_espnow_esp0/src
