@@ -1,5 +1,0 @@
-"-specs=/home/sujin/2027_CANSAT/src/demo/msg_espnow_esp0/src/build/specs/picolibc.specs"
--mlongcalls
--fno-builtin-memcpy
--fno-builtin-memset
--fno-builtin-bzero
