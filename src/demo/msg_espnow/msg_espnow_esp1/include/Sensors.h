@@ -6,7 +6,7 @@
 namespace Sensor{
   struct __attribute__((__packed__)) SensorHeader{
     uint32_t timestamp; //[ms]		system/mission time since boot	4bytes
-    SensorHealth health;//		sensor health/reliability	1byte
+    Health health;	//		sensor health/reliability	1byte
   };
 
   struct __attribute__((__packed__)) IMU{
@@ -42,3 +42,19 @@ namespace Sensor{
     uint8_t sats;	//		# of sats			1byte
   };			//		struct gnss			22bytes
 }//namespace Sensor
+
+
+namespace IMU{Sensor::IMU getData();}
+
+namespace Barometer{
+  bool begin();
+  Sensor::Barometer getData();
+  
+  bool readRegisters(uint8_t reg, uint8_t* data, size_t length);
+  bool writeRegisters(uint8_t reg, const uint8_t* data, size_t length);
+  bool test();
+}
+
+namespace PowerMonitor{Sensor::PowerMonitor getData();}
+namespace Magnetometer{Sensor::Magnetometer getData();}
+namespace GNSS{Sensor::GNSS getData();}

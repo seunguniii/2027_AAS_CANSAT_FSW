@@ -1,3 +1,6 @@
+#include <iostream>
+#include <cstdio>
+
 #include <cstring>
 
 #include "esp_now.h"
@@ -32,7 +35,7 @@ namespace Msg::detail{
     //add MCU
     bool ensurePeer(MCU::ID mcu){
       const auto& mac = MCU::macAddress(mcu);
-      
+
       if(isZeroMac(mac)) return false;
       if(esp_now_is_peer_exist(mac.data())) return true;
       
@@ -44,6 +47,8 @@ namespace Msg::detail{
       peer.encrypt = false;
       
       esp_err_t err = esp_now_add_peer(&peer);
+      std::cout << "[ESPNOW] add peer " << static_cast<int>(mcu) << ": " << esp_err_to_name(err) << std::endl;
+              
       if(err == ESP_OK || err == ESP_ERR_ESPNOW_EXIST) return true;
       
       return false;
@@ -75,12 +80,15 @@ namespace Msg::detail{
     esp_err_t err;
     
     err = esp_netif_init();
+    std::cout << "[ESPNOW] esp_netif_init: " << esp_err_to_name(err) << "\n";
     if(err != ESP_OK && err != ESP_ERR_INVALID_STATE) return false;
     
     err = esp_event_loop_create_default();
+    std::cout << "[ESPNOW] esp_event_loop_create_default: " << esp_err_to_name(err) << "\n";
     if(err != ESP_OK && err != ESP_ERR_INVALID_STATE) return false;
     
     err = nvs_flash_init();
+    std::cout << "[ESPNOW] nvs_flash_init: " << esp_err_to_name(err) << "\n";
     if(err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND){
       err = nvs_flash_erase();
       if(err != ESP_OK) return false;
@@ -90,22 +98,44 @@ namespace Msg::detail{
     
     wifi_init_config_t wifi_config = WIFI_INIT_CONFIG_DEFAULT();
     err = esp_wifi_init(&wifi_config);
+    std::cout << "[ESPNOW] esp_wifi_init: " << esp_err_to_name(err) << "\n";
     if(err != ESP_OK && err != ESP_ERR_WIFI_INIT_STATE) return false;
+    
     err = esp_wifi_set_mode(WIFI_MODE_STA);
+    std::cout << "[ESPNOW] esp_wifi_set_mode: " << esp_err_to_name(err) << "\n";
     if(err != ESP_OK) return false;
+    
     err = esp_wifi_start();
+    std::cout << "[ESPNOW] esp_wifi_start: " << esp_err_to_name(err) << "\n";
     if(err != ESP_OK && err != ESP_ERR_WIFI_STATE) return false;
     
     err = esp_wifi_set_channel(ESPNOW_CHANNEL, WIFI_SECOND_CHAN_NONE);
+    uint8_t mac[6] = {};
+    esp_wifi_get_mac(WIFI_IF_STA, mac);
+    std::cout << "[ESPNOW] Local STA MAC: " << std::hex
+              <<static_cast<int>(mac[0]) << ":"
+              <<static_cast<int>(mac[1]) << ":"
+              <<static_cast<int>(mac[2]) << ":"
+              <<static_cast<int>(mac[3]) << ":"
+              <<static_cast<int>(mac[4]) << ":"
+              <<static_cast<int>(mac[5]) << std::dec << std::endl;
+              
+    uint8_t primary_channel = 0;
+    wifi_second_chan_t second_channel = WIFI_SECOND_CHAN_NONE;
+    esp_wifi_get_channel(&primary_channel, &second_channel);
+    std::cout << "[ESPNOW] Wi-Fi channel: " << static_cast<int>(primary_channel) << "\n";
+    std::cout << "[ESPNOW] esp_wifi_set_channel: " << esp_err_to_name(err) << "\n";
     if(err != ESP_OK) return false;
     
     err = esp_now_init();
+    std::cout << "[ESPNOW] esp_now_init: " << esp_err_to_name(err) << "\n";
     if(err != ESP_OK) return false;
     
     rx_queue = xQueueCreate(RX_QUEUE_SIZE, sizeof(Packet));
     if(rx_queue == nullptr) return false;
     
     err = esp_now_register_recv_cb(onReceive);
+    std::cout << "[ESPNOW] esp_now_register_recv_cb: " << esp_err_to_name(err) << "\n";
     if(err != ESP_OK) return false;
     
     BaseType_t task_result = xTaskCreate(
@@ -113,20 +143,46 @@ namespace Msg::detail{
     );
     if(task_result != pdPASS) return false;
     
+    std::cout << "[ESPNOW] Initialization successful.\n";
     return true;
   }
   
   bool sendESPNOWPacket(const Packet& packet){
     const auto& mac = MCU::macAddress(packet.header.receiver.mcu);
     
-    if(isZeroMac(mac)) return false;
-    if(!ensurePeer(packet.header.receiver.mcu)) return false;
+    std::cout << "[ESPNOW] Receiver MCU: "
+              << static_cast<int>(packet.header.receiver.mcu)
+              << "\n";
+
+    std::cout << "[ESPNOW] Target MAC: "
+              << std::hex
+              << static_cast<int>(mac[0]) << ":"
+              << static_cast<int>(mac[1]) << ":"
+              << static_cast<int>(mac[2]) << ":"
+              << static_cast<int>(mac[3]) << ":"
+              << static_cast<int>(mac[4]) << ":"
+              << static_cast<int>(mac[5])
+              << std::dec
+              << "\n";
+    
+    if(isZeroMac(mac)){
+      std::cout << "[ESPNOW] Target MAC is zero\n";
+      return false;
+    }
+    if(!ensurePeer(packet.header.receiver.mcu)){
+      std::cout << "[ESPNOW] ensurePeer failed\n";
+      return false;
+    }
     
     esp_err_t err = esp_now_send(
       mac.data(),
       reinterpret_cast<const uint8_t*>(&packet),
       sizeof(Packet)
     );
+    
+    std::cout << "[ESPNOW] esp_now_send: "
+              << esp_err_to_name(err)
+              << "\n";
     
     return err == ESP_OK;
   }

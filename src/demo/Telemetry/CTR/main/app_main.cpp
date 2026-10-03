@@ -11,8 +11,8 @@
 #include "Sensors.h"
 #include "Telemetry.h"
 
-constexpr MCU::ID CTR_MCU = MCU::ID::ESP0;
-constexpr MCU::ID GS_MCU = MCU::ID::ESP1;
+constexpr MCU::ID CTR_MCU = MCU::ID::ESP1;
+constexpr MCU::ID GS_MCU = MCU::ID::ESP_CAM_0;
 
 const Msg::Node ctr_telemetry_node{Node::Address{CTR_MCU, Node::ID::TELEMETRY}};
 const Msg::Node gs_telemetry_node{Node::Address{GS_MCU, Node::ID::TELEMETRY}};
@@ -43,11 +43,16 @@ int main(void)
   constexpr uint32_t POWER_MONITOR_PERIOD = 100;//[ms], 10Hz
   
   //states
-  FlightMode mode = FlightMode::S;
+  FlightMode mode = FlightMode::SIMULATION;
   CTR_OpState state = CTR_OpState::LAUNCH_PAD;
   uint8_t mech_state = 0x00;
   
   //TODO Video::start_rec();
+  
+  if(!Barometer::begin()){
+    std::cout << "[CTR] Barometer bus init failed\n";
+    return 1;
+  }
   
   std::cout << "[CTR] Initializing successful.\n";
   
@@ -70,7 +75,7 @@ int main(void)
         ctr_telemetry_node, gs_telemetry_node,
         latest_barometer, latest_power_monitor,
         mode, state, mech_state);
-        
+      
       last_telemetry_time += TELEMETRY_PERIOD;
     }
     

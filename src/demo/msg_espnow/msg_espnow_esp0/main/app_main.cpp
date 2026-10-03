@@ -12,7 +12,7 @@
 
 //CONFIG
 //esp0 build
-constexpr MCU::ID THIS_MCU = MCU::ID::ESP0;
+constexpr MCU::ID THIS_MCU = MCU::ID::ESP_CAM_0;
 constexpr MCU::ID PEER_MCU = MCU::ID::ESP1;
 
 //esp1 build
@@ -61,7 +61,7 @@ bool testESPNOW()
     }
 
     if (!sent) {
-      std::cout << "[ESP-NOW] SEND FAILED"
+      std::cout << "[Main] SEND FAILED"
                 << " packet=" << i
                 << "\n";
     }
@@ -82,7 +82,7 @@ bool testESPNOW()
 
     if(!received_ok) {
       get_fail++;
-      std::cout << "[ESP-NOW] RECEIVE FAILED"
+      std::cout << "[Main] RECEIVE FAILED"
                 << " packet=" << i
                 << "\n";
     }
@@ -94,7 +94,7 @@ bool testESPNOW()
 
     if (received.test_uint8 != expected_uint8){
       data_errors++;
-      std::cout << "[ESP-NOW] UINT8 ERROR"
+      std::cout << "[Main] UINT8 ERROR"
                 << " i=" << i
                 << " expected=" << static_cast<int>(expected_uint8)
                 << " received=" << static_cast<int>(received.test_uint8)
@@ -104,7 +104,7 @@ bool testESPNOW()
     if (received.test_float != expected_float) {
       data_errors++;
 
-      std::cout << "[ESP-NOW] FLOAT ERROR"
+      std::cout << "[Main] FLOAT ERROR"
                 << " i=" << i
                 << " expected=" << expected_float
                 << " received=" << received.test_float
@@ -113,7 +113,7 @@ bool testESPNOW()
   }
 
   //results
-  std::cout << "\n[ESP-NOW] INTER-ESP TEST\n"
+  std::cout << "\n[Main] INTER-ESP TEST\n"
             << "      This MCU       :" << static_cast<int>(THIS_MCU) << "\n"
             << "      Peer MCU       :" << static_cast<int>(PEER_MCU) << "\n"
             << "      Packets        :" << PACKETS_TO_SEND << "\n"
@@ -139,22 +139,22 @@ bool testESPNOW()
 //MAIN
 int main()
 {
-  std::cout << "[ESP-NOW] Initializing...\n";
+  std::cout << "[Main] Initializing...\n";
   if (!Msg::detail::beginESPNOW()) {
-    std::cout << "[ESP-NOW] Initialization failed.\n";
+    std::cout << "[Main] Initialization failed.\n";
     return 1;
   }
 
 
-  std::cout << "[ESP-NOW] Initialization successful.\n";
+  std::cout << "[Main] Initialization successful.\n";
   bool passed = testESPNOW();
 
   if(passed){
-    std::cout << "[ESP-NOW] TEST PASSED\n";
+    std::cout << "[Main] TEST PASSED\n";
     return 0;
   }
 
-  std::cout << "[ESP-NOW] TEST FAILED\n";
+  std::cout << "[Main] TEST FAILED\n";
   return 1;
 }
 
@@ -165,5 +165,5 @@ extern "C" void app_main()
     std::cout.flush();
     fflush(stdout);
 
-    printf("\n[ESP] msg_test returned %d\n", result);
+    printf("\n[Main] msg_test returned %d\n", result);
 }

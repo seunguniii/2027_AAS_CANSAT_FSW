@@ -9,7 +9,7 @@ namespace MCU{
     //real systems (0-199)
     PQ = 0,
     CTR = 1,
-    GND = 2,
+    GS = 2,
     
     
     //test/demo systems (200-255)
@@ -36,6 +36,7 @@ namespace Node{
 
     //flight logic (0-16)
     MAIN = 0,
+    TELEMETRY = 1,
     
     
     //test (200-255)

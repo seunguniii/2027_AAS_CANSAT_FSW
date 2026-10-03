@@ -33,6 +33,7 @@ namespace Msg{
   //inner functions
   namespace detail{  
     bool sendPacket(const Packet& packet);
+    bool getPacket(Packet& packet, Address receiver);
     bool getPacket(Packet& packet, Address receiver, MsgType type, uint16_t length);
     bool enqueuePacket(const Packet& packet);
   }
@@ -46,7 +47,7 @@ namespace Msg{
       }
       
       template <typename T>
-      bool send(const T& message, Address receiver){   
+      bool send(const T& message, Address receiver) const {   
         static_assert(
           std::is_trivially_copyable_v<T>,
           "Message must be trivially copyable"
@@ -70,7 +71,7 @@ namespace Msg{
       }
   
       template<typename T>
-      bool get(T& message){
+      bool get(T& message) const {
         static_assert(
           std::is_trivially_copyable_v<T>,
           "Message must be trivially copyable"
@@ -89,8 +90,11 @@ namespace Msg{
         std::memcpy(&message, packet.payload, sizeof(T));
     
         return true;
-      }  
+      }
+    //</public>
+      
     private:
       Address address;
+    //</private>
   };
 }

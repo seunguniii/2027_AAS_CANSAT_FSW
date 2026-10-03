@@ -45,7 +45,16 @@ namespace Sensor{
 
 
 namespace IMU{Sensor::IMU getData();}
-namespace Barometer{Sensor::Barometer getData();}
+
+namespace Barometer{
+  bool begin();
+  Sensor::Barometer getData();
+  
+  bool readRegisters(uint8_t reg, uint8_t* data, size_t length);
+  bool writeRegisters(uint8_t reg, const uint8_t* data, size_t length);
+  bool test();
+}
+
 namespace PowerMonitor{Sensor::PowerMonitor getData();}
 namespace Magnetometer{Sensor::Magnetometer getData();}
 namespace GNSS{Sensor::GNSS getData();}

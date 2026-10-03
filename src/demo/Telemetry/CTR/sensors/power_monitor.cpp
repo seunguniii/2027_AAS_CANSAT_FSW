@@ -8,7 +8,7 @@ namespace PowerMonitor{
   //TODO command parser for simulation mode
   //CMD::CTR getCMD(void){}
 
-
+  //TODO add variable for pin number etc for individual sensors
   Sensor::PowerMonitor getData(void){
     Sensor::PowerMonitor power_monitor{};
   
