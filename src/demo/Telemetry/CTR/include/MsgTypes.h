@@ -23,8 +23,6 @@ namespace Msg{
     //commands (100 - 149)
     CTR_CMD = 100,
     PQ_CMD = 101,
-    PQ_IMG_STB = 102,
-    PQ_SCI_EXP = 103,
     
     //test (200 - 255)
     TEST = 200,
@@ -78,14 +76,6 @@ namespace Msg{
   template <>
   struct IDof<CMD::PQ>{
     static constexpr MsgType type = MsgType::PQ_CMD;
-  };
-  template <>
-  struct IDof<CMD::PQ_IMG_STB>{
-    static constexpr MsgType type = MsgType::PQ_IMG_STB;
-  };
-  template <>
-  struct IDof<CMD::PQ_SCI_EXP>{
-    static constexpr MsgType type = MsgType::PQ_SCI_EXP;
   };
   
   //Test

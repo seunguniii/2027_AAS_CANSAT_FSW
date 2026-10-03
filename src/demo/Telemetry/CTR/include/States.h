@@ -2,8 +2,8 @@
 #include <cstdint>
 
 enum class FlightMode: uint8_t{
-  F = 0,	//flight
-  S = 1,	//simulation
+  FLIGHT = 0,
+  SIMULATION = 1,
 };
 
 

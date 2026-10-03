@@ -8,14 +8,10 @@ namespace CMD {
     };
     
     enum class PQ: uint8_t {
-        INIT = 0
-    };
-    
-    enum class PQ_IMG_STB: uint8_t {
-        INIT = 0
-    };
-    
-    enum class PQ_SCI_EXP: uint8_t {
-        INIT = 0
+        INIT = 0,
+        
+        IMG_STB = 50,
+        
+        SCI_EXP = 100,
     };
 }

@@ -55,6 +55,8 @@ namespace MCU{
       Node::ID::MAGNETOMETER,
       Node::ID::GNSS,
       
+      Node::ID::TELEMETRY,
+      
       //flight logic
       Node::ID::MAIN
     >(ID::PQ);
@@ -66,12 +68,16 @@ namespace MCU{
       Node::ID::BAROMETER,
       Node::ID::POWER_MONITOR,
       
+      Node::ID::TELEMETRY,
+      
       //flight logic
       Node::ID::MAIN
     >(ID::CTR);
     
-  inline constexpr auto GND = 
-    Device<>(ID::GND);
+  inline constexpr auto GS = 
+    Device<
+      Node::ID::TELEMETRY
+      >(ID::GS);
   
   
   //TEST  
@@ -90,7 +96,9 @@ namespace MCU{
       Node::ID::MSG_LOCAL_NODE0_TEST,
       Node::ID::MSG_LOCAL_NODE1_TEST,
       
-      Node::ID::MSG_ESPNOW_TEST
+      Node::ID::MSG_ESPNOW_TEST,
+      
+      Node::ID::TELEMETRY
     >(ID::ESP0, {0x14, 0xC1, 0x9F, 0x20, 0x06, 0x80});
      
   inline constexpr auto ESP1 = 
@@ -98,9 +106,20 @@ namespace MCU{
       Node::ID::MSG_LOCAL_NODE0_TEST,
       Node::ID::MSG_LOCAL_NODE1_TEST,
       
-      Node::ID::MSG_ESPNOW_TEST
+      Node::ID::MSG_ESPNOW_TEST,
+      
+      Node::ID::TELEMETRY
     >(ID::ESP1, {0x44, 0x1B, 0xF6, 0xFD, 0xB6, 0x04});
     
+  inline constexpr auto ESP_CAM_0 = 
+    Device<
+      Node::ID::MSG_LOCAL_NODE0_TEST,
+      Node::ID::MSG_LOCAL_NODE1_TEST,
+      
+      Node::ID::MSG_ESPNOW_TEST,
+      
+      Node::ID::TELEMETRY
+    >(ID::ESP1, {0x90, 0x70, 0x69, 0xF7, 0xF0, 0x18});
   
   //mac lookup
   inline const MacAddress& macAddress(ID id){
@@ -109,8 +128,8 @@ namespace MCU{
         return PQ.macAddress();
       case ID::CTR:
         return CTR.macAddress();
-      case ID::GND:
-        return GND.macAddress();
+      case ID::GS:
+        return GS.macAddress();
         
       case ID::TEST:
         return TEST.macAddress();
@@ -119,6 +138,8 @@ namespace MCU{
         return ESP0.macAddress();
       case ID::ESP1:
         return ESP1.macAddress();
+      case ID::ESP_CAM_0:
+        return ESP_CAM_0.macAddress();
         
       default:
         break;

@@ -10,7 +10,7 @@
 #include "Bridge.h"
 #include "Telemetry.h"
 
-constexpr MCU::ID GS_MCU = MCU::ID::ESP1;
+constexpr MCU::ID GS_MCU = MCU::ID::ESP_CAM_0;
 const Msg::Node gs_telemetry_node{Node::Address{GS_MCU, Node::ID::TELEMETRY}};
 
 int main(void)

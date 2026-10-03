@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "Bridge.h"
 #include "Port.h"
 

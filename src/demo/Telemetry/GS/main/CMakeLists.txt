@@ -14,5 +14,6 @@ idf_component_register(
     esp_netif
     esp_event
     nvs_flash
+    
     esp_driver_usb_serial_jtag
 )

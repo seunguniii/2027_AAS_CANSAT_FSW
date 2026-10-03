@@ -111,6 +111,15 @@ namespace MCU{
       Node::ID::TELEMETRY
     >(ID::ESP1, {0x44, 0x1B, 0xF6, 0xFD, 0xB6, 0x04});
     
+  inline constexpr auto ESP_CAM_0 = 
+    Device<
+      Node::ID::MSG_LOCAL_NODE0_TEST,
+      Node::ID::MSG_LOCAL_NODE1_TEST,
+      
+      Node::ID::MSG_ESPNOW_TEST,
+      
+      Node::ID::TELEMETRY
+    >(ID::ESP1, {0x90, 0x70, 0x69, 0xF7, 0xF0, 0x18});
   
   //mac lookup
   inline const MacAddress& macAddress(ID id){
@@ -129,6 +138,8 @@ namespace MCU{
         return ESP0.macAddress();
       case ID::ESP1:
         return ESP1.macAddress();
+      case ID::ESP_CAM_0:
+        return ESP_CAM_0.macAddress();
         
       default:
         break;

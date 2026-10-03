@@ -2,8 +2,8 @@
 #include <cstdint>
 
 enum class FlightMode: uint8_t{
-  F = 0,	//flight
-  S = 1,	//simulation
+  FLIGHT = 0,
+  SIMULATION = 1,
 };
 
 
@@ -17,9 +17,11 @@ enum class CTR_OpState: uint8_t{//Container Operation State
 
 
 //Sensor health check
-enum class SensorHealth: uint8_t {
-  HEALTHY = 0,
-  SUSPECT = 1,
-  FAULT = 2,
-  NOT_READY = 3,
-};
+namespace Sensor{
+  enum class Health: uint8_t {
+    HEALTHY = 0,
+    SUSPECT = 1,
+    FAULT = 2,
+    NOT_READY = 3,
+  };
+}

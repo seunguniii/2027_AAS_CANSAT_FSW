@@ -6,9 +6,10 @@
 #include "States.h"
 #include "CMD.h"
 #include "CRC.h"
+#include "Sensors.h"
+namespace Msg{class Node;} //avoid circular dependency
 
 namespace Telemetry {
-
   struct __attribute__((__packed__)) CTR{
     char ID[6];			//	Team number(4 digit int) + "C"\0	6bytes
     uint32_t mission_time;	//[ms]	time since boot				4bytes
@@ -63,8 +64,8 @@ namespace Telemetry {
   
     //miscellaneous
     CMD::PQ cmd_echo;			//last received & processed cmd by pq	1byte
-    CMD::PQ_IMG_STB image_stabilization;//image stabilization metric		1byte
-    CMD::PQ_SCI_EXP science_exp;	//science experiment			1byte
+    CMD::PQ image_stabilization;//image stabilization metric		1byte
+    CMD::PQ science_exp;	//science experiment			1byte
     uint16_t crc;			//crc16-citt checksum			2bytes
   };//struct PQ_Telemetry							102bytes
   
@@ -79,12 +80,26 @@ namespace Telemetry {
   }
   
   template<typename T>
-  inline bool verifyCRC(T& packet){
+  inline bool verifyCRC(const T& packet){
     uint16_t computed = utils::calculateCRC16(
       reinterpret_cast<const uint8_t*>(&packet),
       sizeof(T) - sizeof(uint16_t)
     );
     return (packet.crc == computed);
   }
-
-}//namespace msg
+  
+  bool sendCTR(const Msg::Node& this_node, const Msg::Node& peer_node,
+               const Sensor::Barometer& barometer, 
+               const Sensor::PowerMonitor& power_monitor,
+               FlightMode mode, CTR_OpState state, uint8_t mech_state);
+               
+  bool sendPQ(const Msg::Node& this_node, const Msg::Node& peer_node,
+              const Sensor::Barometer& barometer, 
+              const Sensor::PowerMonitor& power_monitor,
+              const Sensor::IMU& imu,
+              const Sensor::Magnetometer& magnetometer,
+              const Sensor::GNSS& gnss,
+              const Sensor::PowerMonitor& sp1_monitor,
+              const Sensor::PowerMonitor& sp2_monitor,
+              FlightMode mode, uint8_t mech_state);
+}//namespace telemetry

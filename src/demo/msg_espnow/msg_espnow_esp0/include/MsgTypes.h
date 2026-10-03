@@ -4,30 +4,28 @@
 
 #include "Sensors.h"
 #include "CMD.h"
-#include "Telemetry.h"
 #include "Test.h"
+#include "Telemetry.h"
 
 namespace Msg{
   enum class MsgType: uint16_t{
-    //sensors
-    IMU,
-    BAROMETER,
-    POWER_MONITOR,
-    MAGNETOMETER,
-    GNSS,
+    //sensors (0-49)
+    IMU = 0,
+    BAROMETER = 1,
+    POWER_MONITOR = 2,
+    MAGNETOMETER = 3,
+    GNSS = 4,
     
-    //telemetry
-    CTR_TELEMETRY,
-    PQ_TELEMETRY,
+    //telemetry (60 - 89)
+    CTR_TELEMETRY = 60,
+    PQ_TELEMETRY = 61,
     
-    //commands
-    CTR_CMD,
-    PQ_CMD,
-    PQ_IMG_STB,
-    PQ_SCI_EXP,
+    //commands (100 - 149)
+    CTR_CMD = 100,
+    PQ_CMD = 101,
     
-    //test
-    TEST,
+    //test (200 - 255)
+    TEST = 200,
   };
   
   
@@ -78,14 +76,6 @@ namespace Msg{
   template <>
   struct IDof<CMD::PQ>{
     static constexpr MsgType type = MsgType::PQ_CMD;
-  };
-  template <>
-  struct IDof<CMD::PQ_IMG_STB>{
-    static constexpr MsgType type = MsgType::PQ_IMG_STB;
-  };
-  template <>
-  struct IDof<CMD::PQ_SCI_EXP>{
-    static constexpr MsgType type = MsgType::PQ_SCI_EXP;
   };
   
   //Test
