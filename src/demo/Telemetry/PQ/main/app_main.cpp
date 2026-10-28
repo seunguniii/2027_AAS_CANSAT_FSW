@@ -11,8 +11,8 @@
 #include "Sensors.h"
 #include "Telemetry.h"
 
-constexpr MCU::ID PQ_MCU = MCU::ID::ESP0;
-constexpr MCU::ID GS_MCU = MCU::ID::ESP1;
+constexpr MCU::ID PQ_MCU = MCU::ID::ESP_CAM_1;
+constexpr MCU::ID GS_MCU = MCU::ID::ESP_CAM_0;
 
 const Msg::Node pq_telemetry_node{Node::Address{PQ_MCU, Node::ID::TELEMETRY}};
 const Msg::Node gs_telemetry_node{Node::Address{GS_MCU, Node::ID::TELEMETRY}};
