@@ -1,125 +1,131 @@
-#include <iostream>
-#include <cstdio>
-#include <cstdint>
+#include "driver/gpio.h"
 
-#include "esp_timer.h"
+#include <iostream>
+
 #include "freertos/FreeRTOS.h"
+#include "freertos/event_groups.h"
+#include "freertos/queue.h"
 #include "freertos/task.h"
 
-#include "MCU.hpp"
-#include "Msg.hpp"
+#include "I2C.hpp"
 #include "MsgESPNOW.hpp"
 #include "Sensors.hpp"
-#include "Telemetry.hpp"
 
-constexpr MCU::ID CTR_MCU = MCU::ID::ESP1;
-constexpr MCU::ID GS_MCU = MCU::ID::ESP_CAM_0;
+#include "app_runtime.hpp"
 
-const Msg::Node ctr_telemetry_node{Node::Address{CTR_MCU, Node::ID::TELEMETRY}};
-const Msg::Node gs_telemetry_node{Node::Address{GS_MCU, Node::ID::TELEMETRY}};
+namespace{
+  constexpr char TAG[] = "[CTR]";
+  
+  //i2c configs
+  constexpr gpio_num_t SDA_PIN = GPIO_NUM_17;
+  constexpr gpio_num_t SCL_PIN = GPIO_NUM_18;
+  constexpr i2c_port_t I2C_PORT = I2C_NUM_0;
+}
 
-
-//I2C CONFIG    
-constexpr gpio_num_t SDA_PIN = GPIO_NUM_17;
-constexpr gpio_num_t SCL_PIN = GPIO_NUM_18;
-constexpr i2c_port_t I2C_PORT = I2C_NUM_0;
-static I2C::Bus i2c_bus;
-I2C::BusConfig i2c_config{
-  .port = I2C_PORT,
-  .sda_pin = SDA_PIN,
-  .scl_pin = SCL_PIN,
-  .internal_pullup = true
-};
-
-
-//MAIN
-extern "C" void app_main()
+extern "C" void app_main(void)
 {
-  std::cout << "[CTR] Initializing...\n";
+  std::cout << TAG << " Initializing application." << std::endl;
   
-  if(!Msg::detail::beginESPNOW()){
-    std::cout << "[CTR] ESP-NOW initialization failed.\n";
-    return;
-  }
+  //initialize i2c
+  static I2C::Bus i2c_bus;
+  I2C::BusConfig i2c_config{
+    .port = I2C_PORT,
+    .sda_pin = SDA_PIN,
+    .scl_pin = SCL_PIN,
+    .internal_pullup = true
+  };
   
-  
-  uint32_t current_time = 0;  
-  
-  //telemetry
-  uint32_t last_telemetry_time = 0;
-  uint32_t TELEMETRY_PERIOD = 250; //[ms], depends on operation state, default 4Hz
-  
-  //interface
-  //initialize I2C bus
   esp_err_t err = i2c_bus.init(i2c_config);
-  if(err != ESP_OK) {
-    std::cout << "[CTR] I2C bus initialization failed." << esp_err_to_name(err) << std::endl;
+  
+  if(err != ESP_OK){
+    std::cout << TAG << " I2C initialization failed: " << esp_err_to_name(err) << std::endl;
     return;
   }
-  std::cout << "[CTR] I2C bus initialization success." << std::endl;
-  std::cout << "[CTR] I2C Configuration" << std::endl;
-  std::cout << "       Port           : " << i2c_config.port << std::endl;
-  std::cout << "       SDA_PIN        : " << i2c_config.sda_pin << std::endl;
-  std::cout << "       SCL_PIN        : " << i2c_config.scl_pin << std::endl;
-  std::cout << "       INTERNAL_PULLUP: "
-            << std::boolalpha << i2c_config.internal_pullup
-            << std::endl;
+  std::cout << TAG << " I2C initialized." << std::endl;
   
   
-  //sensors
-  //BMP581
-  Sensor::Barometer latest_barometer{};  
+  //initialize sensors
   if(!Barometer::init(i2c_bus)){
-    std::cout << "[CTR] BMP581 initialization failed." << std::endl;
+    std::cout << TAG << " BMP581 initialization failed." << std::endl;
     return;
   }
-  std::cout << "[CTR] BMP581 initialization success." << std::endl;
+  std::cout << TAG << " BMP581 initialized." << std::endl;
   
   
-  Sensor::PowerMonitor latest_power_monitor{};
-  
-  uint32_t last_barometer_time = 0;
-  uint32_t last_power_monitor_time = 0;
-  constexpr uint32_t BAROMETER_PERIOD = 50; //[ms], 20Hz
-  constexpr uint32_t POWER_MONITOR_PERIOD = 100;//[ms], 10Hz
-  
-  //states
-  FlightMode mode = FlightMode::SIMULATION;
-  CTR_OpState state = CTR_OpState::LAUNCH_PAD;
-  uint8_t mech_state = 0x00;
-  
-  //TODO Video::start_rec();
-  
-  while(true){
-    current_time = static_cast<uint32_t>(esp_timer_get_time() / 1000LL);
-    
-    if(current_time - last_barometer_time >= BAROMETER_PERIOD){
-      latest_barometer = Barometer::getData();
-      last_barometer_time += BAROMETER_PERIOD;
-    }
-    
-    if(current_time - last_power_monitor_time >= POWER_MONITOR_PERIOD){
-      latest_power_monitor = PowerMonitor::getData();
-      last_power_monitor_time += POWER_MONITOR_PERIOD;
-    }
-    
-    //for checking telemetry cycle period
-    if(current_time - last_telemetry_time >= TELEMETRY_PERIOD){
-      Telemetry::sendCTR(
-        ctr_telemetry_node, gs_telemetry_node,
-        latest_barometer, latest_power_monitor,
-        mode, state, mech_state);
-        
-      last_telemetry_time += TELEMETRY_PERIOD;
-    }
-    
-    //TODO
-    //if(CMD_received == CMD::Video::stop) Video::stop_rec();
-    
-    //TODO
-    //if(landed) return 0;      
-    
-    vTaskDelay(pdMS_TO_TICKS(1));
+  //intialize esp-now
+  if(!Msg::detail::beginESPNOW()){
+  std::cout << TAG << " ESP-NOW initialization failed." << std::endl;
+    return;
   }
-  return;
+  std::cout << TAG << " ESP-NOW initialized." << std::endl;
+  
+  
+  //craete resources
+  static App::RuntimeContext runtime{};
+  
+  runtime.sensor_snapshot_queue = xQueueCreate(1, sizeof(App::SensorSnapshot));
+  runtime.start_gate = xEventGroupCreate();
+  
+  if(runtime.sensor_snapshot_queue == nullptr || runtime.start_gate == nullptr){
+    std::cout << TAG << " Failed to create runtime resources." << std::endl;
+    
+    if(runtime.sensor_snapshot_queue != nullptr){
+      vQueueDelete(runtime.sensor_snapshot_queue);
+      runtime.sensor_snapshot_queue = nullptr;
+    }
+    
+    if(runtime.start_gate != nullptr){
+      vEventGroupDelete(runtime.start_gate);
+      runtime.start_gate = nullptr;
+    }
+    return;
+  }
+  const int64_t start_time = App::nowMS();
+  runtime.started_at_ms.store(start_time);
+  runtime.sensor_heartbeat_ms.store(start_time);
+  runtime.telemetry_heartbeat_ms.store(start_time);
+  
+  
+  //create workers
+  TaskHandle_t sensor_handle = nullptr;
+  TaskHandle_t telemetry_handle = nullptr;
+  TaskHandle_t supervisor_handle = nullptr;
+  
+  auto cleanup_unstarted_tasks = [&](){
+    if(supervisor_handle != nullptr) vTaskDelete(supervisor_handle);
+    if(telemetry_handle != nullptr) vTaskDelete(telemetry_handle);
+    if(sensor_handle != nullptr) vTaskDelete(sensor_handle);
+    
+    vEventGroupDelete(runtime.start_gate);
+    vQueueDelete(runtime.sensor_snapshot_queue);
+    
+    runtime.start_gate = nullptr;
+    runtime.sensor_snapshot_queue = nullptr;
+  };
+  
+  if(xTaskCreate(App::sensorTask, "sensor_task", 6144, &runtime, 5, &sensor_handle) != pdPASS){
+    std::cout << TAG << " Failed to create SensorTask." << std::endl;
+    cleanup_unstarted_tasks();
+    return;
+  }
+  
+  if(xTaskCreate(App::telemetryTask, "telemetry_task", 6144, &runtime, 5, &telemetry_handle) != pdPASS){
+    std::cout << TAG << " Failed to create TelemetryTask." << std::endl;
+    cleanup_unstarted_tasks();
+    return;
+  }
+  
+  
+  if(xTaskCreate(App::supervisorTask, "supervisor_task", 4096, &runtime, 3, &supervisor_handle) != pdPASS){
+    std::cout << TAG << " Failed to create SupervisorTask." << std::endl;
+    cleanup_unstarted_tasks();
+    return;
+  }
+  
+  
+  //*whips workers to get to work*
+  xEventGroupSetBits(runtime.start_gate, App::TASKS_START_BIT);
+  std::cout << TAG << " All application tasks started." << std::endl;
+  
+  return; 
 }
