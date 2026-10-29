@@ -7,7 +7,7 @@
 #include "CMD.hpp"
 #include "CRC.hpp"
 #include "Sensors.hpp"
-//namespace Msg{class Node;} //avoid circular dependency
+namespace Msg{class Node;} //avoid circular dependency
 
 namespace Telemetry {
   struct __attribute__((__packed__)) CTR{
@@ -64,8 +64,8 @@ namespace Telemetry {
   
     //miscellaneous
     CMD::PQ cmd_echo;			//last received & processed cmd by pq	1byte
-    CMD::PQ image_stabilization;//image stabilization metric		1byte
-    CMD::PQ science_exp;	//science experiment			1byte
+    CMD::PQ image_stabilization;	//image stabilization metric		1byte
+    CMD::PQ science_exp;		//science experiment			1byte
     uint16_t crc;			//crc16-citt checksum			2bytes
   };//struct PQ_Telemetry							102bytes
   

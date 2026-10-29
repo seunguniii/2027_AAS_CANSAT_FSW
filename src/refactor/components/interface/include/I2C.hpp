@@ -14,10 +14,11 @@ namespace I2C{
     gpio_num_t scl_pin;
     
     bool internal_pullup;
-  }
+  };
   
   class Bus{
     public:
+      esp_err_t init(const BusConfig& config);
       esp_err_t addDevice(uint8_t address,
                           uint32_t frequency_hz,
                           i2c_master_dev_handle_t& device);
@@ -26,7 +27,7 @@ namespace I2C{
       i2c_master_bus_handle_t handle_ = nullptr;
   };
   
-  bool readRegisters(i2c_master_dev_handle_t device, uint8_reg, const uint8_t* data, size_t length);
-  bool writeRegisters(i2c_master_dev_handle_t device, uint8_reg, const uint8_t* data, size_t length);
+  bool readRegisters(i2c_master_dev_handle_t device, uint8_t reg, uint8_t* data, size_t length);
+  bool writeRegisters(i2c_master_dev_handle_t device, uint8_t reg, const uint8_t* data, size_t length);
 }
 

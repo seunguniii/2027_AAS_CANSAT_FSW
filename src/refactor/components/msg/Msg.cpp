@@ -11,7 +11,15 @@ namespace Msg::detail{
   
   static std::mutex queue_mutex;
   
+  //Packet TX
   bool enqueuePacket(const Packet& packet){
+    /*
+    'sends' packet by saving packet in memory
+    rx node reads the memory to recieve the packet
+    input: packet
+    output: result of enqueuePacket()
+    */
+    
     std::lock_guard<std::mutex> lock(queue_mutex);
     
     if(queue_count >= QUEUE_SIZE) return false;
@@ -23,18 +31,29 @@ namespace Msg::detail{
   }
   
   bool sendPacket(const Packet& packet){
+    /*
+    sends packet to another node
+    input: packet
+    output: result of send<protocol>packet
+    */
+    
     //local msg
     if(packet.header.sender.mcu == packet.header.receiver.mcu) return enqueuePacket(packet);
-    
     //inter-mcu msg
-    	return sendESPNOWPacket(packet);
-    
-    //use below line instead of line30 for compile testing
-    //return true;
+    return sendESPNOWPacket(packet);
   }
   
-  //COMMON RECEIVER
+  
+  
+  //Packet RX
   bool getPacket(Packet& packet, Address receiver, MsgType msg_type, uint16_t length){
+    /*
+    packet rx; fills the input packet with queued packet
+    filters ququed packets by receiver, msg type and length
+    input: packet, receiver's address, msg_type, msg length
+    output: receive result
+    */
+    
     std::lock_guard<std::mutex> lock(queue_mutex);
     
     for(size_t i = 0; i < queue_count; i++){
@@ -58,8 +77,14 @@ namespace Msg::detail{
     return false;
   }
   
-  //overloader for getPacket, used in bridge.cpp of GS
+  
   bool getPacket(Packet& packet, Address receiver){
+    /*
+    packet rx for GS; fills the input packet with queued packet
+    filters queued packets by receiver
+    input: packet, receiver's address
+    output: receive result
+    */
     std::lock_guard<std::mutex> lock(queue_mutex);
     
     for(size_t i = 0; i < queue_count; i++){

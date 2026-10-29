@@ -2,7 +2,7 @@
 
 #include "esp_timer.h"
 
-#include "Msg.hpp"
+//#include "Msg.hpp"
 
 namespace Magnetometer{
   //TODO command parser for simulation mode

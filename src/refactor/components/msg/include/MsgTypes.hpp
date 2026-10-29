@@ -5,7 +5,11 @@
 #include "Sensors.hpp"
 #include "CMD.hpp"
 #include "Test.hpp"
-#include "Telemetry.hpp"
+
+namespace Telemetry{
+  struct CTR;
+  struct PQ;
+}
 
 namespace Msg{
   enum class MsgType: uint16_t{
