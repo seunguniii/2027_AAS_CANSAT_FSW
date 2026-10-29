@@ -1,0 +1,13 @@
+idf_component_register(
+  SRCS
+    "CTR.cpp"
+    "PQ.cpp"
+  INCLUDE_DIRS
+    "include"
+  REQUIRES
+    msg
+    system
+    sensors
+    utils
+    cmd  
+)

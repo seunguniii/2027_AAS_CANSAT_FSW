@@ -1,8 +1,15 @@
-#include "Bridge.h"
-#include "Port.h"
+#include "Bridge.hpp"
+#include "Port.hpp"
 
 namespace Bridge{
   bool forwardPacket(const Msg::Node& this_node){
+    /*
+    forwards packet from esp to gs port
+    gets packet directed for my node
+    input: my node
+    output: received packet
+    */
+    
     Msg::Packet packet{};
     
     if(!Msg::detail::getPacket(packet, this_node.getAddress())) return false;

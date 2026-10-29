@@ -15,7 +15,7 @@ namespace Telemetry{
   CTR buildCTRTelemetry(const Msg::Node& this_node,
                         const Sensor::Barometer& barometer,
                         const Sensor::PowerMonitor& power_monitor,
-                        FlightMode mode, CTR_OpState state, uint8_t mech_state){    
+                        FlightMode mode, CTR_OpState state, uint8_t mech_state){
     //GET DATA
     //counters
     //TODO CMD::CTR cmd_logger; //command logger

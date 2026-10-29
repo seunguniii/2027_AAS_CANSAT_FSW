@@ -25,6 +25,12 @@ namespace Port{
     size_t rx_count = 0;
     
     bool validFrameType(uint8_t value){
+      /*
+      check if read value is a valid type
+      input: value from frame
+      output: valid?
+      */
+      
       switch(static_cast<FrameType>(value)) {
         case FrameType::CTR_TELEMETRY:
         case FrameType::PQ_TELEMETRY:
@@ -37,6 +43,11 @@ namespace Port{
     }
       
     uint16_t readCRC(const uint8_t* data) {
+      /*
+      read CRC from input data
+      input: data
+      output: crc
+      */
       uint16_t crc{};
         
       std::memcpy(&crc, data, sizeof(crc));
@@ -44,16 +55,22 @@ namespace Port{
     }
       
     void resetReceiver(){
+      /*resets rx count after each packet*/
       rx_count = 0;
     }
       
     bool processFrame(FrameType& type, Msg::Packet& packet) {
-      //frame structure
-      //[0]			SYNC_0
-      //[1]			SYNC_1
-      //[2]			FrameType
-      //[3 - last-2]		Msg::Packet
-      //[last-1 - last]	CRC
+      /*
+      processes frame according to type and fills input packet
+      frame structure
+      [0]			SYNC_0
+      [1]			SYNC_1
+      [2]			FrameType
+      [3 - last-2]		Msg::Packet
+      [last-1 - last]	CRC
+      input: frame type, packet
+      output: success?
+      */
         
       uint8_t frame_type_raw = rx_frame[2];
         
@@ -68,18 +85,15 @@ namespace Port{
         &rx_frame[2], FRAME_TYPE_SIZE + sizeof(Msg::Packet)
       );
         
-      if(received_crc != calculated_crc){
-        resetReceiver();
-        return false;
-      }
-      
       resetReceiver();
+      if(received_crc != calculated_crc) return false;
       return true;
     }
   }//namespace
     
     
   bool begin(void) {
+    /*init port driver*/
     if(usb_serial_jtag_is_driver_installed()) return true;
       
     usb_serial_jtag_driver_config_t config = USB_SERIAL_JTAG_DRIVER_CONFIG_DEFAULT();
@@ -89,6 +103,12 @@ namespace Port{
     
     
   bool sendPacket(FrameType type, const Msg::Packet& packet){
+    /*
+    send packet via port; write packet data to memory and forward it via port
+    input: frame type of packet to send, packet
+    output: sent?
+    */
+    
     uint8_t frame[FRAME_SIZE]{};
     
     frame[0] = SYNC_0; frame[1] = SYNC_1;
@@ -110,6 +130,11 @@ namespace Port{
         
         
   bool getPacket(FrameType& type, Msg::Packet& packet){
+    /*
+    get packet via port
+    input: frame type of expected packet, packet to fill
+    output: gotten?
+    */
     uint8_t buffer[64]{};
       
     int bytes_read = usb_serial_jtag_read_bytes(buffer, sizeof(buffer), 0);

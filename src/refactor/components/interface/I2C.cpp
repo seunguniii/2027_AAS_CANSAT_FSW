@@ -13,11 +13,19 @@ namespace I2C{
     bus_config.glitch_ignore_cnt = 7;
     bus_config.flags.enable_internal_pullup = config.internal_pullup;
 
-    return i2c_new_master_bus(&bus_config, &bus_handle); 
+    return i2c_new_master_bus(&bus_config, &handle_); 
   }
   
   
   esp_err_t Bus::addDevice(uint8_t address, uint32_t frequency_hz, i2c_master_dev_handle_t& device){    
+    /*
+    adds i2c device to i2c bus
+    helper for initialization of i2c devices
+    called from i2c_device.init()
+    input: i2c address(usually set by sensor manufactureres), i2c frequency, i2c device
+    output: i2c bus registeration result (esp_err_t)
+    */
+    
     if(handle_ == nullptr) return ESP_ERR_INVALID_STATE;
     
     i2c_device_config_t device_config{};
@@ -31,7 +39,14 @@ namespace I2C{
   
   
   bool readRegisters(i2c_master_dev_handle_t device, uint8_t reg, uint8_t* data, size_t length) {
-    esp_err_t err = i2c_master_receive(device, data, length, -1);
+    /*
+    helper for reading internal register
+    called from i2c_device.getData()
+    input: device handle of device in intereset, register, data, data length
+    output: success of readRegister
+    */
+    
+    esp_err_t err = i2c_master_transmit_receive(device, &reg, sizeof(reg), data, length, -1);
     if(err != ESP_OK){
       std::cout << "[I2C] Register read failed: " << esp_err_to_name(err) << std::endl;
       return false;
@@ -41,6 +56,12 @@ namespace I2C{
   
   
   bool writeRegisters(i2c_master_dev_handle_t device, uint8_t reg, const uint8_t* data, size_t length){
+    /*
+    helper for writing internal register
+    input: device handle of device in intereset, register, data, data lenght
+    output: success of writeRegister
+    */
+    
     uint8_t buffer[257];
     
     if(length > sizeof(buffer) - 1) return false;

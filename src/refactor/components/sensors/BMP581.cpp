@@ -1,6 +1,5 @@
 #include "Sensors.hpp"
 #include "I2C.hpp"
-#include "Msg.hpp"
 
 #include <iostream>
 #include <cstdint>
@@ -25,15 +24,10 @@ namespace Barometer{
     //0x15 << 2 = 0x54
     constexpr uint8_t ODR_CONFIG_20HZ_NORMAL = 0x55;
     
-    i2c_master_dev_handle_t dvice_handle = nullptr;
+    i2c_master_dev_handle_t device_handle = nullptr;
     
-    bool readRegisters(uint8_t reg, uint8_t* data, length){return I2C::readRegisters(device_handle, reg, data, length);}
-    bool writeRegisters(uint8_reg, const uint8_t* data, size_t length){return I2C::writeRegisters(device_handle, reg, data, length);}
-    
-    //constexpr i2c_port_t I2C_PORT = I2C_NUM_0;
-    
-    //constexpr gpio_num_t SDA_PIN = GPIO_NUM_17;
-    //constexpr gpio_num_t SCL_PIN = GPIO_NUM_18;
+    bool readRegisters(uint8_t reg, uint8_t* data, size_t length){return I2C::readRegisters(device_handle, reg, data, length);}
+    bool writeRegisters(uint8_t reg, const uint8_t* data, size_t length){return I2C::writeRegisters(device_handle, reg, data, length);}
     
     constexpr uint32_t I2C_FREQ_HZ = 100000;
     
@@ -41,6 +35,11 @@ namespace Barometer{
   }
   
   bool init(I2C::Bus& bus) {
+    /*
+    add bmp581 to i2c bus
+    input: pre-configured i2c bus
+    output: init?
+    */
     std::cout << "[BMP581] Starting sensor initialization..." << std::endl;
     
     esp_err_t err = bus.addDevice(BMP581_ADDRESS, I2C_FREQ_HZ, device_handle);
@@ -57,7 +56,7 @@ namespace Barometer{
       return false;
     }    
     if(chip_id != 0x50){
-      std::cout << "[BMP581] Unexpected chip ID: 0x%02X", chip_id);
+      std::cout << "[BMP581] Unexpected chip ID: " << chip_id << std::endl;
       return false;
     }
     std::cout << "[BMP581] Chip ID: 0x" << std::hex << static_cast<int>(chip_id) << std::dec << std::endl;
@@ -68,6 +67,7 @@ namespace Barometer{
     //pressure enabled = 0x40
     //OSR_P            = 0x20
     //OSR_T            = 0x04
+    //------------------------
     uint8_t osr_config = 0x64;
     if(!writeRegisters(REG_OSR_CONFIG, &osr_config, 1)) return false;
     std::cout << "[BMP581] OSR configured." << std::endl;
@@ -88,6 +88,10 @@ namespace Barometer{
   
 
   Sensor::Barometer getData(void){
+    /*
+    get data from bmp581
+    output: barometer data
+    */
     Sensor::Barometer barometer{};
     
     uint8_t data[6] = {};

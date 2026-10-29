@@ -23,8 +23,13 @@ namespace Msg::detail{
     
     QueueHandle_t rx_queue = nullptr;
     
-    //check valid mac addr
     bool isZeroMac(const MCU::MacAddress& mac){
+      /*  
+      check if input mac is valid
+      input: mac of an mcu
+      output: valid? 
+      */
+      
       for(uint8_t byte: mac){
         if(byte != 0) return false;
       }
@@ -32,8 +37,13 @@ namespace Msg::detail{
     }
     
     
-    //add MCU
     bool ensurePeer(MCU::ID mcu){
+      /*
+      add input mcu as peer
+      input: mcu
+      output: add result
+      */
+      
       const auto& mac = MCU::macAddress(mcu);
 
       if(isZeroMac(mac)) return false;
@@ -47,15 +57,18 @@ namespace Msg::detail{
       peer.encrypt = false;
       
       esp_err_t err = esp_now_add_peer(&peer);
-      std::cout << "[ESPNOW] add peer " << static_cast<int>(mcu) << ": " << esp_err_to_name(err) << std::endl;
+      std::cout << "[ESPNOW] Add peer " << static_cast<int>(mcu) << ": " << esp_err_to_name(err) << std::endl;
               
       if(err == ESP_OK || err == ESP_ERR_ESPNOW_EXIST) return true;
       
       return false;
     }
     
-    //receive callback
+    
     void onReceive(const esp_now_recv_info_t* info, const uint8_t* data, int data_len){
+      /*
+      rx callback
+      */
       (void)info;
       
       if(data == nullptr) return;
@@ -68,15 +81,22 @@ namespace Msg::detail{
     }
     
     void receiveTask(void*){
+      /*
+      ESPNow callback task
+      */
       Packet packet{};
-      
-      while(true){
-        if(xQueueReceive(rx_queue, &packet, portMAX_DELAY) == pdTRUE) enqueuePacket(packet);
-      }
+      while(true){if(xQueueReceive(rx_queue, &packet, portMAX_DELAY) == pdTRUE) enqueuePacket(packet);}
     }
   }//namespace
   
+  
   bool beginESPNOW(){
+    /*
+    initialized ESPNOW protocol
+    input: void
+    output: begun?
+    */
+    
     esp_err_t err;
     
     err = esp_netif_init();
@@ -147,7 +167,14 @@ namespace Msg::detail{
     return true;
   }
   
+  
+  
   bool sendESPNOWPacket(const Packet& packet){
+    /*
+    sends packet via ESPNow
+    input: packet to send
+    output: sent?
+    */
     const auto& mac = MCU::macAddress(packet.header.receiver.mcu);
     
     if(isZeroMac(mac)){
