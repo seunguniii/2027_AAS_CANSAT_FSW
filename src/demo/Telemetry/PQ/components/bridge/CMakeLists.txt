@@ -1,0 +1,10 @@
+idf_component_register(
+  SRCS
+    "Bridge.cpp"
+  INCLUDE_DIRS
+    "include"
+  REQUIRES
+    msg
+  PRIV_REQUIRES
+    port
+)

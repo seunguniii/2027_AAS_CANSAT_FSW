@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <cstddef>
 #include "States.hpp"
 #include "I2C.hpp"
 
@@ -21,7 +22,7 @@ namespace Sensor{
     SensorHeader header;//		sensor header			5bytes
     float altitude;	//[m]		altitude, 0.1m res		4bytes
     float pressure;	//[pa]		air pressure, 1pa res		4bytes
-    float temperature; 	//[C*]		temperature, 0.1C* res		4bytes
+    float temperature; 	//[C*]		temperature, 0.1 *C res		4bytes
   };			//		struct barometer		17bytes
   
   struct __attribute__((__packed__)) PowerMonitor{
@@ -47,12 +48,61 @@ namespace Sensor{
 }//namespace Sensor
 
 
-namespace IMU{Sensor::IMU getData();}
-namespace Barometer{
-  bool init(I2C::Bus& bus);
-  
-  Sensor::Barometer getData();
+namespace IMU{
+  class BNO085{
+    public:
+      Sensor::IMU getData();
+    private:
+  };
 }
-namespace PowerMonitor{Sensor::PowerMonitor getData();}
-namespace Magnetometer{Sensor::Magnetometer getData();}
-namespace GNSS{Sensor::GNSS getData();}
+
+namespace Barometer{
+  class BMP581{
+    public:
+      bool init(I2C::Bus& bus, uint8_t address);
+      Sensor::Barometer getData();
+    
+    private:
+      i2c_master_dev_handle_t device_handle = nullptr;
+      
+      static constexpr uint8_t REG_CHIP_ID = 0x01;
+      static constexpr uint8_t REG_INT_STATUS = 0x27;    
+      static constexpr uint8_t REG_TEMP_DATA = 0x1D;
+      static constexpr uint8_t REG_OSR_CONFIG = 0x36;
+      static constexpr uint8_t REG_ODR_CONFIG = 0x37;
+      
+      //ODR 20Hz  = 0x15 //ref. Bosch ODR table
+      //pwr_mode  = 0x01 //NORMAL
+      //0x15 << 2 = 0x54
+      static constexpr uint8_t ODR_CONFIG_20HZ_NORMAL = 0x55;
+      
+      static constexpr uint32_t I2C_FREQ_HZ = 100000;
+      
+      bool readRegisters(uint8_t reg, uint8_t* data, size_t length);
+      bool writeRegisters(uint8_t reg, const uint8_t* data, size_t lenght);
+  };
+}
+
+namespace PowerMonitor{
+  class INA3221{
+    public:
+      Sensor::PowerMonitor getData();
+    private:
+  };
+}
+
+namespace Magnetometer{
+  class MagSens{
+    public:
+      Sensor::Magnetometer getData();
+    private:
+  };
+}
+
+namespace GNSS{
+  class Gnss{
+    public:
+      Sensor::GNSS getData();
+    private:
+  };
+}

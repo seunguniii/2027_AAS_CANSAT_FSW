@@ -9,7 +9,7 @@ namespace GNSS{
   //CMD getCMD(void){}
 
 
-  Sensor::GNSS getData(void){
+  Sensor::GNSS Gnss::getData(void){
     Sensor::GNSS gnss{};
   
     //header
