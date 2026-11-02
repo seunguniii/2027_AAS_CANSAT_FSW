@@ -8,33 +8,7 @@
 
 
 namespace Barometer{
-  namespace{
-    constexpr char TAG[] = "BMP581";
-    
-    constexpr uint8_t BMP581_ADDRESS = 0x47;
-    
-    constexpr uint8_t REG_CHIP_ID = 0x01;
-    constexpr uint8_t REG_INT_STATUS = 0x27;    
-    constexpr uint8_t REG_TEMP_DATA = 0x1D;
-    constexpr uint8_t REG_OSR_CONFIG = 0x36;
-    constexpr uint8_t REG_ODR_CONFIG = 0x37;
-    
-    //ODR 20Hz  = 0x15 //ref. Bosch ODR table
-    //pwr_mode  = 0x01 //NORMAL
-    //0x15 << 2 = 0x54
-    constexpr uint8_t ODR_CONFIG_20HZ_NORMAL = 0x55;
-    
-    i2c_master_dev_handle_t device_handle = nullptr;
-    
-    bool readRegisters(uint8_t reg, uint8_t* data, size_t length){return I2C::readRegisters(device_handle, reg, data, length);}
-    bool writeRegisters(uint8_t reg, const uint8_t* data, size_t length){return I2C::writeRegisters(device_handle, reg, data, length);}
-    
-    constexpr uint32_t I2C_FREQ_HZ = 100000;
-    
-    
-  }
-  
-  bool init(I2C::Bus& bus) {
+  bool BMP581::init(I2C::Bus& bus, uint8_t address) {
     /*
     add bmp581 to i2c bus
     input: pre-configured i2c bus
@@ -42,25 +16,24 @@ namespace Barometer{
     */
     std::cout << "[BMP581] Starting sensor initialization..." << std::endl;
     
-    esp_err_t err = bus.addDevice(BMP581_ADDRESS, I2C_FREQ_HZ, device_handle);
+    esp_err_t err = bus.addDevice(address, I2C_FREQ_HZ, device_handle);
     if(err != ESP_OK){
       std::cout << "[BMP581] i2c_master_bus_add_device error: " << esp_err_to_name(err) << std::endl;
       return false;
     }
-    std::cout << "[BMP581] I2C device registeration success." << std::endl;
-    
+    std::cout << "[BMP581] I2C device registeration success." << std::endl;    
 
     uint8_t chip_id = 0;
     if(!readRegisters(REG_CHIP_ID, &chip_id, 1)){
       std::cout << "[BMP581] Failed to read chip ID" << std::endl;
       return false;
     }    
-    if(chip_id != 0x50){
+    if(chip_id != 0x50){ //checks if the chip is BMP581
       std::cout << "[BMP581] Unexpected chip ID: " << chip_id << std::endl;
       return false;
     }
     std::cout << "[BMP581] Chip ID: 0x" << std::hex << static_cast<int>(chip_id) << std::dec << std::endl;
-    
+        
     //sensor config
     std::cout << "[BMP581] Configuring sensor..." << std::endl;
     //enable pressure reading
@@ -71,26 +44,25 @@ namespace Barometer{
     uint8_t osr_config = 0x64;
     if(!writeRegisters(REG_OSR_CONFIG, &osr_config, 1)) return false;
     std::cout << "[BMP581] OSR configured." << std::endl;
-    
+        
     //20hz normal
     uint8_t odr_config = ODR_CONFIG_20HZ_NORMAL;
     if(!writeRegisters(REG_ODR_CONFIG, &odr_config, 1)) return false;
     std::cout << "[BMP581] ODR configured." << std::endl;
-    
+        
     std::cout << "[BMP581] Configuration complete." << std::endl;
     std::cout << "         OSR Pressure    : 16x" << std::endl;
     std::cout << "         OSR Temperature : 16x" << std::endl;
     std::cout << "         ODR : 20Hz NORMAL" << std::endl;
-    
+        
     std::cout << "[BMP581] Standby." << std::endl;
     return true;    
   }
-  
-
-  Sensor::Barometer getData(void){
+      
+  Sensor::Barometer BMP581::getData(void){
     /*
     get data from bmp581
-    output: barometer data
+    output: barometer data    
     */
     Sensor::Barometer barometer{};
     
@@ -105,7 +77,7 @@ namespace Barometer{
                                static_cast<int32_t>(data[0]);                          
     int32_t pressure_raw = (static_cast<int32_t>(static_cast<int8_t>(data[5])) << 16) |
                            (static_cast<int32_t>(data[4])) << 8 |
-                            static_cast<int32_t>(data[3]);
+                            static_cast<int32_t>(data[3]);    
                               
     float temperature = static_cast<float>(temperature_raw) / 65536.0f;
     float pressure = static_cast<float>(pressure_raw) / 64.0f;    
@@ -115,9 +87,12 @@ namespace Barometer{
     barometer.header.timestamp = static_cast<uint32_t>(esp_timer_get_time() / 1000LL);
     barometer.header.health = Sensor::Health::HEALTHY;
     barometer.altitude = 123.0; //dummy TODO
-    barometer.pressure = pressure;
+    barometer.pressure = pressure;    
     barometer.temperature = temperature;
   
     return barometer;
   }
-}
+
+  bool BMP581::readRegisters(uint8_t reg, uint8_t* data, size_t length){return I2C::readRegisters(device_handle, reg, data, length);}
+  bool BMP581::writeRegisters(uint8_t reg, const uint8_t* data, size_t length){return I2C::writeRegisters(device_handle, reg, data, length);}
+}//namepsace Barmometer

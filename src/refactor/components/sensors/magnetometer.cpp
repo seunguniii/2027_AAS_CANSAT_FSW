@@ -9,7 +9,7 @@ namespace Magnetometer{
   //CMD::CTR getCMD(void){}
 
 
-  Sensor::Magnetometer getData(void){
+  Sensor::Magnetometer MagSens::getData(void){
     Sensor::Magnetometer magnetometer{};
   
     //header

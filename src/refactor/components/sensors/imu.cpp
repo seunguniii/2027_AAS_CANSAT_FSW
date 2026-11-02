@@ -9,7 +9,7 @@ namespace IMU{
   //CMD getCMD(void){}
 
 
-  Sensor::IMU getData(void){
+  Sensor::IMU BNO085::getData(void){
     Sensor::IMU imu{};
   
     //header

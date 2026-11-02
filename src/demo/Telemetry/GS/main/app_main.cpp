@@ -4,28 +4,22 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#include "Msg.h"
-#include "MsgESPNOW.h"
-#include "Port.h"
-#include "Bridge.h"
-#include "Telemetry.h"
+#include "MCU.hpp"
+#include "Msg.hpp"
+#include "MsgESPNOW.hpp"
+#include "Port.hpp"
+#include "Bridge.hpp"
 
 constexpr MCU::ID GS_MCU = MCU::ID::ESP_CAM_0;
 const Msg::Node gs_telemetry_node{Node::Address{GS_MCU, Node::ID::TELEMETRY}};
 
-int main(void)
+extern "C" void app_main()
 {
   std::cout << "[GS] Initializing...\n";
   
-  if(!Msg::detail::beginESPNOW()){
-    std::cout << "[GS] ESP-NOW initialization failed.\n";
-    return 1;
-  }
+  if(!Msg::detail::beginESPNOW()) std::cout << "[GS] ESP-NOW initialization failed.\n";
   
-  if(!Port::begin()){
-    std::cout << "[GS] Port initialization failed.\n";
-    return 1;
-  }
+  if(!Port::begin()) std::cout << "[GS] Port initialization failed.\n";
   
   std::cout << "[GS] Initialization successful.\n";
   
@@ -35,15 +29,4 @@ int main(void)
     
     vTaskDelay(1);
   }
-  return 1;
-}
-
-extern "C" void app_main()
-{
-  const int result = main();
-  
-  std::cout.flush();
-  fflush(stdout);
-  
-  printf("\n[GS] GS returned %d\n", result);
 }
