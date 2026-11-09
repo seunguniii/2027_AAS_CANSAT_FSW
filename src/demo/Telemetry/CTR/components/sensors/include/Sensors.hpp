@@ -83,11 +83,19 @@ namespace Barometer{
   };
 }
 
-namespace PowerMonitor{
-  class INA3221{
+namespace PowerMonitor{  
+  class INA228{
     public:
+      bool init(I2C::Bus& bus, uint8_t addresss);
       Sensor::PowerMonitor getData();
     private:
+      i2c_master_dev_handle_t device_handle = nullptr;
+      
+      static constexpr uint8_t REG_CHIP_ID = 0x01;
+      static constexpr uint32_t I2C_FREQ_HZ = 100000;
+      
+      bool readRegisters(uint8_t reg, uint8_t* data, size_t length);
+      bool writeRegisters(uint8_t reg, const uint8_t* data, size_t lenght);
   };
 }
 

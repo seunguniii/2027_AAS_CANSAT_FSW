@@ -19,7 +19,7 @@ namespace App{
   
   //sensors
   extern Barometer::BMP581 barometer;
-  extern PowerMonitor::INA3221 power_monitor;
+  extern PowerMonitor::INA228 power_monitor;
   //imu?
   
   //latest sensor readings

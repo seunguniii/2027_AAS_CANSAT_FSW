@@ -3,11 +3,11 @@
 #include <thread>
 #include <atomic>
 
-#include "Msg.h"
-#include "Nodes.h"
-#include "MCU.h"
+#include "Msg.hpp"
+#include "Nodes.hpp"
+#include "MCU.hpp"
 
-#include "Test.h"
+#include "Test.hpp"
 
 //=========================
 //concurrent messaging test
