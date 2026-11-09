@@ -15,7 +15,7 @@
 
 namespace App{
   Barometer::BMP581 barometer{};
-  PowerMonitor::INA3221 power_monitor{};
+  PowerMonitor::INA228 power_monitor{};
 }
 
 namespace{

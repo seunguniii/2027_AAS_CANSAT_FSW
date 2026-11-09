@@ -2,17 +2,18 @@ echo -e "\033[1;32m\nIntiating test...\n\033[0m"
 
 #header compile test
 echo -e "\033[0;33m[Header] Starting header test...\033[0m"
-g++ -I src/refactor/components/bridge/include\
-    -I src/refactor/components/cmd/include\
-    -I src/refactor/components/interface/include\
-    -I src/refactor/components/msg/include\
-    -I src/refactor/components/port/include\
-    -I src/refactor/components/sensors/include\
-    -I src/refactor/components/system/include\
-    -I src/refactor/components/telemetry/include\
-    -I src/refactor/components/test/include\
-    -I src/refactor/components/utils/include\
-    src/refactor/test/header_test.cpp -o src/refactor/test/trash/header_test && echo -e "\033[0;33m[Header] All headers compiled successfully.\033[0m\n"
+g++ -I src/ws/components/bridge/include\
+    -I src/ws/components/cmd/include\
+    -I src/ws/components/interface/include\
+    -I src/ws/components/msg/include\
+    -I src/ws/components/port/include\
+    -I src/ws/components/sensors/include\
+    -I src/ws/components/system/include\
+    -I src/ws/components/telemetry/include\
+    -I src/ws/components/test/include\
+    -I src/ws/components/utils/include\
+    src/ws/test/header_test.cpp -o src/ws/test/trash/header_test\
+     && echo -e "\033[0;33m[Header] All headers compiled successfully.\033[0m\n"
 
 #TODO other tests
 

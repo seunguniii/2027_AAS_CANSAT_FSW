@@ -1,17 +1,18 @@
 //add headers to test, new headers on top
 //exclude inter-mcu comm(espnow etc)
-#include "Port.h"
-#include "Bridge.h"
-#include "MCU.h"
-#include "Test.h"
-#include "Nodes.h"
-#include "MsgTypes.h"
-#include "Msg.h"
-#include "Telemetry.h"
-#include "States.h"
-#include "Sensors.h"
-#include "CRC.h"
-#include "CMD.h"
+//#include "I2C.hpp"
+//#include "Port.hpp"
+//#include "Bridge.hpp"
+#include "MCU.hpp"
+#include "Test.hpp"
+#include "Nodes.hpp"
+//#include "MsgTypes.hpp"
+//#include "Msg.hpp"
+//#include "Telemetry.hpp"
+#include "States.hpp"
+//#include "Sensors.hpp"
+#include "CRC.hpp"
+#include "CMD.hpp"
 
 int main()
 {

@@ -4,12 +4,39 @@
 
 //#include "Msg.hpp"
 
-namespace PowerMonitor{
-  //TODO command parser for simulation mode
-  //CMD::CTR getCMD(void){}
+namespace PowerMonitor{  
+  bool INA228::init(I2C::Bus& bus, uint8_t address){
+    /*
+    add bmp581 to i2c bus
+    input: pre-configured i2c bus
+    output: init?
+    */
+    std::cout << "[INA228] Starting sensor initialization..." << std::endl;
+    
+    esp_err_t err = bus.addDevice(address, I2C_FREQ_HZ, device_handle);
+    if(err != ESP_OK){
+      std::cout << "[INA228] i2c_master_bus_add_device error: " << esp_err_to_name(err) << std::endl;
+      return false;
+    }
+    std::cout << "[INA228] I2C device registeration success." << std::endl;    
 
-  //TODO add variable for pin number etc for individual sensors
-  Sensor::PowerMonitor INA3221::getData(void){
+    uint8_t chip_id = 0;
+    if(!readRegisters(REG_CHIP_ID, &chip_id, 1)){
+      std::cout << "[INA228] Failed to read chip ID" << std::endl;
+      return false;
+    }    
+    if(chip_id != 0x50){ //TODO change to INA228 chip ID
+      std::cout << "[INA228] Unexpected chip ID: " << chip_id << std::endl;
+      return false;
+    }
+    std::cout << "[INA228] Chip ID: 0x" << std::hex << static_cast<int>(chip_id) << std::dec << std::endl;
+    
+    //TODO sensor config
+        
+    std::cout << "[INA228] Standby." << std::endl;
+    return true;    
+  }
+  Sensor::PowerMonitor INA228::getData(void){
     Sensor::PowerMonitor power_monitor{};
   
     //header

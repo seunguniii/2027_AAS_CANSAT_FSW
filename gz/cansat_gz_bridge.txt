@@ -1,0 +1,7 @@
+gz topic -t /rocket/ignite -m gz.msgs.Boolean -p "data: true"
+
+gz topic -t /pocket_qube/parachute/deploy -m gz.msgs.Empty -p ""
+
+ros2 run ros_gz_bridge parameter_bridge /model/rocket_base/pose@geometry_msgs/msg/PoseStamped[gz.msgs.Pose /model/container/pose@geometry_msgs/msg/PoseStamped[gz.msgs.Pose /model/pocket_qube/pose@geometry_msgs/msg/PoseStamped[gz.msgs.Pose
+
+
