@@ -77,7 +77,6 @@ namespace Msg::detail{
     return false;
   }
   
-  
   bool getPacket(Packet& packet, Address receiver){
     /*
     packet rx for GS; fills the input packet with queued packet

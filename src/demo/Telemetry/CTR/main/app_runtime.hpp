@@ -20,12 +20,14 @@ namespace App{
   //sensors
   extern Barometer::BMP581 barometer;
   extern PowerMonitor::INA228 power_monitor;
+  extern IMU::BNO085 imu;
   //imu?
   
   //latest sensor readings
   struct SensorSnapshot{
     Sensor::Barometer barometer{};
     Sensor::PowerMonitor power_monitor{};
+    Sensor::IMU imu{};
     int64_t captured_at_ms = 0;
   };
   

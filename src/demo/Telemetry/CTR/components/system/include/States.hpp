@@ -16,12 +16,20 @@ enum class CTR_OpState: uint8_t{//Container Operation State
 };
 
 
+enum class State: uint8_t{
+  NOTREADY = 0,
+  STANDBY = 1,
+  BUSY = 2,
+  ERROR = 3,
+};
+
+
 //Sensor health check
 namespace Sensor{
   enum class Health: uint8_t {
     HEALTHY = 0,
     SUSPECT = 1,
     FAULT = 2,
-    NOT_READY = 3,
+    NOTREADY = 3,
   };
 }

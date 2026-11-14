@@ -34,6 +34,7 @@ namespace Msg{
   namespace detail{  
     bool sendPacket(const Packet& packet);
     bool getPacket(Packet& packet, Address receiver);
+    bool getPacket(Packet& packet, Address receiver, MsgType type);
     bool getPacket(Packet& packet, Address receiver, MsgType type, uint16_t length);
     bool enqueuePacket(const Packet& packet);
   }

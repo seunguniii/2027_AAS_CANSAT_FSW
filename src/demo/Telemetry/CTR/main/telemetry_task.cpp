@@ -26,6 +26,11 @@ namespace App{
     FlightMode MODE = FlightMode::SIMULATION; //TODO set with cmd
     CTR_OpState STATE = CTR_OpState::LAUNCH_PAD; //TODO set with imu/bar readings
     uint8_t MECH_STATE = 0x00;
+    uint16_t SENSOR_STATE = 1; //TODO set logic
+    uint16_t TASK_STATE = 1; //TODO get from supervisor snapshot
+    CMD::Ack CMD_RX; //TODO get from cmd snapshot
+    CMD::RxResult RX_RESULT; //TODO get from cmd snapshot
+    CMD::Ack CMD_EXEC; //TODO get from cmd snapshot
   }
   
   void telemetryTask(void* parameter){
@@ -46,7 +51,9 @@ namespace App{
         if(xQueuePeek(runtime->sensor_snapshot_queue, &snapshot, 0) == pdTRUE){
           const bool accepted = Telemetry::sendCTR(ctr_telemetry_node, gs_telemetry_node,
                                                    snapshot.barometer, snapshot.power_monitor,
-                                                   MODE, STATE, MECH_STATE);
+                                                   snapshot.imu, SENSOR_STATE,
+                                                   MODE, STATE, MECH_STATE, TASK_STATE,
+                                                   CMD_RX, RX_RESULT, CMD_EXEC);
           
           if(accepted) runtime->last_tx_request_accepted_ms.store(nowMS()); //if telemetry tx success
           else{
