@@ -21,7 +21,8 @@ namespace Telemetry{
                         const Sensor::PowerMonitor& power_monitor,
                         const Sensor::IMU& imu,
                         uint16_t sensor_state, 
-                        FlightMode mode, CTR_OpState state, uint8_t mech_state, uint16_t task_state,
+                        State::Flight mode, State::CTR_OP state,
+                        uint8_t mech_state, uint8_t task_state,
                         CMD::Ack cmd_rx, CMD::RxResult rx_result, CMD::Ack cmd_exec){
     //GET DATA
     //counters
@@ -77,7 +78,8 @@ namespace Telemetry{
                const Sensor::PowerMonitor& power_monitor,
                const Sensor::IMU& imu,
                uint16_t sensor_state,
-               FlightMode mode, CTR_OpState state, uint8_t mech_state, uint16_t task_state,
+               State::Flight mode, State::CTR_OP state, 
+               uint8_t mech_state, uint8_t task_state,
                CMD::Ack cmd_rx, CMD::RxResult rx_result, CMD::Ack cmd_exec){
     CTR telemetry = buildCTRTelemetry(this_node, barometer, power_monitor, imu, sensor_state,
                                       mode, state, mech_state, task_state, cmd_rx, rx_result, cmd_exec);

@@ -16,7 +16,7 @@ namespace Node{
 
 
     //flight logic (0-16)
-    MAIN = 0,
+    SUPER = 0,
     TELEMETRY = 1,
     
     //test (200-255)
@@ -33,6 +33,5 @@ namespace Node{
     Node::ID node;
   };
   
-  //check if all address are set correctly in compiling stage
   static_assert(sizeof(Address) == 2);
 }

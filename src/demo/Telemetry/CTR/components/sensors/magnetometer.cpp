@@ -15,7 +15,7 @@ namespace Magnetometer{
     //header
     //esp_timer_get_time gives [us]; convert to [ms]
     magnetometer.header.timestamp = static_cast<uint32_t>(esp_timer_get_time() / 1000LL);
-    magnetometer.header.health = Sensor::Health::HEALTHY; //dummy
+    magnetometer.header.health = State::Health::HEALTHY; //dummy
   
     //dummy data
     magnetometer.mag[0] = 7;

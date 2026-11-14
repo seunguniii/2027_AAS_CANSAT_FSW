@@ -75,7 +75,7 @@ namespace MCU{
       Node::ID::TELEMETRY,
       
       //flight logic
-      Node::ID::MAIN
+      Node::ID::SUPER
     >(ID::PQ);
     
   inline constexpr auto CTR = 
@@ -88,7 +88,7 @@ namespace MCU{
       Node::ID::TELEMETRY,
       
       //flight logic
-      Node::ID::MAIN
+      Node::ID::SUPER
     >(ID::CTR);
     
   inline constexpr auto GS = 

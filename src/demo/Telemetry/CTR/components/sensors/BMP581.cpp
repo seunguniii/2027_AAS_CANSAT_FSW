@@ -69,7 +69,7 @@ namespace Barometer{
     uint8_t data[6] = {};
     
     if(!readRegisters(REG_TEMP_DATA, data, sizeof(data))){
-      barometer.header.health = Sensor::Health::FAULT;
+      barometer.header.health = State::Health::FAULT;
       return barometer;
     }
     int32_t temperature_raw = (static_cast<int32_t>(static_cast<int8_t>(data[2])) << 16) |
@@ -85,7 +85,7 @@ namespace Barometer{
     //fill sensor data
     //esp_timer_get_time gives [us]; convert to [ms]
     barometer.header.timestamp = static_cast<uint32_t>(esp_timer_get_time() / 1000LL);
-    barometer.header.health = Sensor::Health::HEALTHY;
+    barometer.header.health = State::Health::HEALTHY;
     barometer.altitude = 123.0; //dummy TODO
     barometer.pressure = pressure;    
     barometer.temperature = temperature;

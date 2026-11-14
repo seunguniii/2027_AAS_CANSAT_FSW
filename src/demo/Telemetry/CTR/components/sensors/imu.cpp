@@ -15,7 +15,7 @@ namespace IMU{
     //header
     //esp_timer_get_time gives [us]; convert to [ms]
     imu.header.timestamp = static_cast<uint32_t>(esp_timer_get_time() / 1000LL);
-    imu.header.health = Sensor::Health::HEALTHY; //dummy TODO Sensors.checkHealth(raw_data);
+    imu.header.health = State::Health::HEALTHY; //dummy TODO Sensors.checkHealth(raw_data);
   
     //dummy data
     imu.accel[0] = 0.5; //east

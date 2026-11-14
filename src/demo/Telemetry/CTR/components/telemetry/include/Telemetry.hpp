@@ -17,28 +17,28 @@ namespace Telemetry {
     uint16_t command_count;	//	command received counter		2bytes	12
   
     //states
-    FlightMode mode;		//flight mode, flight/sim			1byte	14
-    CTR_OpState state;		//container state				1byte	15
+    State::Flight mode;		//flight mode, flight/sim			1byte	14
+    State::CTR_OP state;	//container state				1byte	15
     uint8_t mech_state;		//hex, bit0 dply mech, bit1 pq released		1byte	16
-    uint16_t task_state;	//bitmaske	subtask state, 2bits each	2bytes (14bit)	17
+    uint8_t task_state;		//bitmaske	subtask state, 1bits each	1bytes (6bits)	17
   
     //sensors
-    float altitude;		//[m]						4bytes	19
-    float pressure;		//[pa]						4bytes	23
-    float temperature;		//[C*]						4bytes	27
-    float battery_voltage;	//[V]						4bytes	31
-    float battery_current;	//[ma]						4bytes	35
-    float attitude[3];		//[deg]						12bytes	39
-    float rot_rate[3];		//[deg/s]	roll, pitch, yaw		12bytes	51
-    float acc[3];		//[m/s^2]	east, south, down		12bytes	63
-    uint16_t sensor_state;	//bitmask	sensor+cam status, 2bits each	2bytes (12bits)	75
+    float altitude;		//[m]						4bytes	18
+    float pressure;		//[pa]						4bytes	22
+    float temperature;		//[C*]						4bytes	26
+    float battery_voltage;	//[V]						4bytes	30
+    float battery_current;	//[ma]						4bytes	34
+    float attitude[3];		//[deg]						12bytes	38
+    float rot_rate[3];		//[deg/s]	roll, pitch, yaw		12bytes	50
+    float acc[3];		//[m/s^2]	east, south, down		12bytes	62
+    uint8_t sensor_state;	//bitmask	sensor+cam status, 2bits each	1bytes (5bits)	74
   
     //cmd [uint16_t sequence_num] [uint8_t verb] [uint8_t noun] [uint32_t param]
-    CMD::Ack cmd_rx;		//last received cmd				8bytes	77
-    CMD::RxResult rx_result;	//how did receiving/parsing of the cmd go?	1byte	85
-    CMD::Ack cmd_exec;		//last executed cmd				8bytes	86
+    CMD::Ack cmd_rx;		//last received cmd				8bytes	75
+    CMD::RxResult rx_result;	//how did receiving/parsing of the cmd go?	1byte	83
+    CMD::Ack cmd_exec;		//last executed cmd				8bytes	84
     
-    uint8_t reserved[32];	//reserved bytes				32bytes	94
+    uint8_t reserved[34];	//reserved bytes				34bytes	92
     
     uint16_t crc;		//crc16-citt checksum				2bytes	126
     
@@ -103,7 +103,7 @@ namespace Telemetry {
                const Sensor::Barometer& barometer, 
                const Sensor::PowerMonitor& power_monitor,
                const Sensor::IMU& imu, uint16_t sensor_state,
-               FlightMode mode, CTR_OpState state, uint8_t mech_state, uint16_t task_state,
+               State::Flight mode, State::CTR_OP state, uint8_t mech_state, uint8_t task_state,
                CMD::Ack cmd_rx, CMD::RxResult rx_result, CMD::Ack cmd_exec);
                
   bool sendPQ(const Msg::Node& this_node, const Msg::Node& peer_node,

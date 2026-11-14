@@ -15,7 +15,7 @@ namespace GNSS{
     //header
     //esp_timer_get_time gives [us]; convert to [ms]
     gnss.header.timestamp = static_cast<uint32_t>(esp_timer_get_time() / 1000LL);
-    gnss.header.health = Sensor::Health::HEALTHY; //dummy TODO Sensors.checkHealth(raw_data);
+    gnss.header.health = State::Health::HEALTHY; //dummy TODO Sensors.checkHealth(raw_data);
   
     //dummy data
     gnss.gnss_time = gnss.header.timestamp;

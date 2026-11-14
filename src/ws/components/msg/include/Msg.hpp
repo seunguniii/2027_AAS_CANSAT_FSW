@@ -10,7 +10,7 @@
 
 namespace Msg{  
   //only the payload, not the whole packet
-  constexpr uint16_t MAX_PAYLOAD_SIZE = 128;
+  constexpr uint16_t PAYLOAD_SIZE = 128;
   
   using Address = ::Node::Address;
   
@@ -25,9 +25,8 @@ namespace Msg{
     uint8_t payload[MAX_PAYLOAD_SIZE];
   };
   
-  //compiler level check
   static_assert(sizeof(Header) == 8); //header has 8 bytes
-  static_assert(sizeof(Packet) == sizeof(Header) + MAX_PAYLOAD_SIZE);
+  static_assert(sizeof(Packet) == sizeof(Header) + PAYLOAD_SIZE);
   
   
   //inner functions
@@ -55,8 +54,8 @@ namespace Msg{
         );
     
         static_assert(
-          sizeof(T) <= MAX_PAYLOAD_SIZE,
-          "Message is too large"
+          sizeof(T) == PAYLOAD_SIZE,
+          "Message size mismatch"
         );
     
         Packet packet{};

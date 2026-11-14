@@ -43,7 +43,7 @@ namespace PowerMonitor{
     //header
     //esp_timer_get_time gives [us]; convert to [ms]
     power_monitor.header.timestamp = static_cast<uint32_t>(esp_timer_get_time() / 1000LL);
-    power_monitor.header.health = Sensor::Health::HEALTHY; //dummy
+    power_monitor.header.health = State::Health::HEALTHY; //dummy
   
     //dummy data
     power_monitor.voltage = 4.2;

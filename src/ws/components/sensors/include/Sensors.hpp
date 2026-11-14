@@ -8,7 +8,7 @@
 namespace Sensor{
   struct __attribute__((__packed__)) SensorHeader{
     uint32_t timestamp; //[ms]		system/mission time since boot	4bytes
-    Health health;	//		sensor health/reliability	1byte
+    State::Health health;	//		sensor health/reliability	1byte
   };
 
   struct __attribute__((__packed__)) IMU{
