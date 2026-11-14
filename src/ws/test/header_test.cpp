@@ -12,7 +12,7 @@
 #include "States.hpp"
 //#include "Sensors.hpp"
 #include "CRC.hpp"
-#include "CMD.hpp"
+//#include "CMD.hpp"
 
 int main()
 {

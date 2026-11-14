@@ -1,7 +1,6 @@
 #include "I2C.hpp"
 
 #include <iostream>
-#include <cstring>
 
 namespace I2C{
   esp_err_t Bus::init(const BusConfig& config){    
@@ -69,7 +68,7 @@ namespace I2C{
     
     buffer[0] = reg;
     
-    std::memcpy(buffer + 1, data, length);
+    for(size_t i = 0; i < length; i ++){buffer[i+1] = data[i];}
     
     esp_err_t err = i2c_master_transmit(device, buffer, length + 1, -1);
     if(err != ESP_OK){

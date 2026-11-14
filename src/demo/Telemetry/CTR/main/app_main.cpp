@@ -16,6 +16,7 @@
 namespace App{
   Barometer::BMP581 barometer{};
   PowerMonitor::INA228 power_monitor{};
+  IMU::BNO085 imu{};
 }
 
 namespace{
@@ -44,7 +45,7 @@ extern "C" void app_main(void)
   
   if(err != ESP_OK){
     std::cout << TAG << " I2C initialization failed: " << esp_err_to_name(err) << std::endl;
-    return;
+    return; //TODO handle failure instead of exit app
   }
   std::cout << TAG << " I2C initialized." << std::endl;
   
@@ -53,7 +54,7 @@ extern "C" void app_main(void)
   //Barometer::BMP581 barometer;
   if(!App::barometer.init(i2c_bus, 0x47)){
     std::cout << TAG << " BMP581 initialization failed." << std::endl;
-    return;
+    return; //TODO handle failure instead of exit app
   }
   std::cout << TAG << " BMP581 initialized." << std::endl;
   
@@ -61,7 +62,7 @@ extern "C" void app_main(void)
   //intialize esp-now
   if(!Msg::detail::beginESPNOW()){
   std::cout << TAG << " ESP-NOW initialization failed." << std::endl;
-    return;
+    return; //TODO handle failure instead of exit app
   }
   std::cout << TAG << " ESP-NOW initialized." << std::endl;
   
@@ -112,21 +113,24 @@ extern "C" void app_main(void)
   if(xTaskCreate(App::sensorTask, "sensor_task", 6144, &runtime, 5, &sensor_handle) != pdPASS){
     std::cout << TAG << " Failed to create SensorTask." << std::endl;
     cleanup_unstarted_tasks();
-    return;
+    return; //TODO handle failure instead of exit app
   }
   
   if(xTaskCreate(App::telemetryTask, "telemetry_task", 6144, &runtime, 5, &telemetry_handle) != pdPASS){
     std::cout << TAG << " Failed to create TelemetryTask." << std::endl;
     cleanup_unstarted_tasks();
-    return;
+    return; //TODO handle failure instead of exit app
   }
   
   
   if(xTaskCreate(App::supervisorTask, "supervisor_task", 4096, &runtime, 3, &supervisor_handle) != pdPASS){
     std::cout << TAG << " Failed to create SupervisorTask." << std::endl;
     cleanup_unstarted_tasks();
-    return;
+    return; //TODO handle failure instead of exit app
   }
+  //TODO
+  // maybe only start the supervisor task here and let supervisor tasks start other apps
+  //  -> supervisor can handle failed-to-create tasks
   
   
   //*whips workers to get to work*

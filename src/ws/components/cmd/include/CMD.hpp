@@ -21,7 +21,7 @@ namespace CMD{
     
     ENABLE = 200,
     ACTIVATE = 201,
-  }
+  };
   
   
   enum class Noun: uint8_t{
@@ -34,13 +34,13 @@ namespace CMD{
     
     FLIGHTMODE = 200,
     MECHANISM = 250,
-  }
+  };
   
   //FreeRTOS ID, different from Node::ID
   enum class TaskID: uint32_t{
     SENSORS = 50,
     TELEMETRY = 60
-  }
+  };
   
   
   struct __attribute__((__packed__)) CMD{//12 bytes
@@ -75,7 +75,7 @@ namespace CMD{
     NO_PACKET = 1,
     INVALID_CRC = 2,
     INVALID_CMD = 3,
-  }
+  };
   
   CMD buildCMD(Node::Address rx_addr, uint16_t sq_num, 
                Verb verb, Noun noun, uint32_t param);

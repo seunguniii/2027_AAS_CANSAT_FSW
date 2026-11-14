@@ -6,7 +6,7 @@ namespace MCU{enum class ID: std::uint8_t;}
 
 namespace Node{
   //ADD NODES HERE
-  enum class ID : uint8_t {
+  enum class ID : uint8_t {    
     //sensor drivers (50-99)
     IMU = 50,
     BAROMETER = 51,
@@ -18,7 +18,6 @@ namespace Node{
     //flight logic (0-16)
     MAIN = 0,
     TELEMETRY = 1,
-    
     
     //test (200-255)
     HEADER_TEST = 200,

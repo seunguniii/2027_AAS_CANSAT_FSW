@@ -1,6 +1,7 @@
 #include "app_runtime.hpp"
 
 #include <iostream>
+#include <cmath>
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -14,6 +15,7 @@ namespace App{
     //sensor periods
     constexpr int64_t BAROMETER_PERIOD_MS = 50;
     constexpr int64_t POWER_MONITOR_PERIOD_MS = 100;
+    constexpr int64_t IMU_PERIOD_MS = 50;
   }//namespace
   
   void sensorTask(void* parameter){
@@ -28,12 +30,14 @@ namespace App{
     bool have_all_sensors = false;
     bool have_barometer = false;
     bool have_power_monitor = false;
+    bool have_imu = false;
     
     int64_t now = nowMS();
     
     //set last_<sensor>_ms to now - <sensor>_period_ms to enforce readings from 0ms
     int64_t last_barometer_ms = now - BAROMETER_PERIOD_MS;
     int64_t last_power_monitor_ms = now - POWER_MONITOR_PERIOD_MS;
+    int64_t last_imu_ms = now = IMU_PERIOD_MS;
     
     std::cout << TAG << " SensorTask started." << std::endl;
     
@@ -58,8 +62,18 @@ namespace App{
         snapshot_updated = true;
       }
       
+      float attitude[3];//roll pitch yaw
+      now = nowMS();
+      if(now - last_imu_ms >= IMU_PERIOD_MS){
+        snapshot.imu = imu.getData();
+        
+        last_imu_ms = nowMS();
+        have_imu = true;
+        snapshot_updated = true;
+      }
+      
       //TODO add sensors
-      have_all_sensors = (have_barometer && have_power_monitor); 
+      have_all_sensors = (have_barometer && have_power_monitor && have_imu); 
       if(snapshot_updated && have_all_sensors){
         snapshot.captured_at_ms = nowMS();
         

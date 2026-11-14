@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <algorithm>
+#include <cmath>
 
 #include "esp_timer.h"
 
@@ -21,7 +22,7 @@ namespace Telemetry{
                         const Sensor::IMU& imu,
                         uint16_t sensor_state, 
                         FlightMode mode, CTR_OpState state, uint8_t mech_state, uint16_t task_state,
-                        CMD::Ack cmd_rx, CMD::Ack cmd_exec){
+                        CMD::Ack cmd_rx, CMD::RxResult rx_result, CMD::Ack cmd_exec){
     //GET DATA
     //counters
     
@@ -48,15 +49,24 @@ namespace Telemetry{
     telemetry.temperature = barometer.temperature;
     telemetry.battery_voltage = power_monitor.voltage;
     telemetry.battery_current = power_monitor.current;
-    std::copy(imu.accel, imu.accel + 3, telemetry.acc);
-    std::copy(imu.rot_rate, imu.rot_rate + 3, telemetry.rot_rate);
+    
+    float attitude[3]; //roll pitch yaw
+    float qx = imu.q[0]; float qy = imu.q[1]; 
+    float qz = imu.q[2]; float qw = imu.q[3];
+    attitude[0] = atan2(2*(qw*qx + qy*qx), 1 - 2*(qx*qx + qy*qy)) * 180/M_PI;
+    attitude[1] = asin(2*(qw*qy - qz*qx)) * 180/M_PI;
+    attitude[2] = atan2(2*(qw*qz + qx*qy), 1 - 2*(qy*qy + qz*qz)) * 180/M_PI;
+    std::memcpy(telemetry.attitude, attitude, sizeof(telemetry.attitude));    
+    std::memcpy(telemetry.rot_rate, imu.rot_rate, sizeof(telemetry.rot_rate));
+    std::memcpy(telemetry.acc, imu.accel, sizeof(telemetry.acc));
     telemetry.sensor_state = sensor_state;
     
     //cmd
-    telemetry.cmd_rx = cmd_logger.echo;
-    telemetry.cmd_exec = cmd_echo;
+    telemetry.cmd_rx = cmd_rx;
+    telemetry.rx_result = rx_result;
+    telemetry.cmd_exec = cmd_exec;
     
-    uitls::buildCRC(telemetry);
+    utils::buildCRC(telemetry);
     
     return telemetry;
   }
@@ -68,9 +78,9 @@ namespace Telemetry{
                const Sensor::IMU& imu,
                uint16_t sensor_state,
                FlightMode mode, CTR_OpState state, uint8_t mech_state, uint16_t task_state,
-               CMD::Ack cmd_rx, CMD::Ack cmd_exec){
+               CMD::Ack cmd_rx, CMD::RxResult rx_result, CMD::Ack cmd_exec){
     CTR telemetry = buildCTRTelemetry(this_node, barometer, power_monitor, imu, sensor_state,
-                                      mode, state, mech_state, task_state, cmd_rx, cmd_exec);
+                                      mode, state, mech_state, task_state, cmd_rx, rx_result, cmd_exec);
     ctr_packet_count++;
     return this_node.send(telemetry, peer_node.getAddress());  
   }

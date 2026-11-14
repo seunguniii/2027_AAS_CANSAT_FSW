@@ -3,9 +3,9 @@
 #include <cstdint>
 
 #include "Sensors.hpp"
-#include "CMD.hpp"
 #include "Test.hpp"
 
+namespace CMD{struct CMD;}
 namespace Telemetry{
   struct CTR;
   struct PQ;
@@ -73,7 +73,7 @@ namespace Msg{
   
   //CMD
   template <>
-  struct IDof<CMD::CMD>{
+  struct IDof<::CMD::CMD>{
     static constexpr MsgType type = MsgType::CMD;
   };
   

@@ -3,9 +3,9 @@
 #include <cstdint>
 
 #include "Sensors.hpp"
-#include "CMD.hpp"
 #include "Test.hpp"
 
+namespace CMD{struct CMD;}
 namespace Telemetry{
   struct CTR;
   struct PQ;
@@ -24,9 +24,8 @@ namespace Msg{
     CTR_TELEMETRY = 60,
     PQ_TELEMETRY = 61,
     
-    //commands (100 - 149)
-    CTR_CMD = 100,
-    PQ_CMD = 101,
+    //command
+    CMD = 100,
     
     //test (200 - 255)
     TEST = 200,
@@ -74,13 +73,10 @@ namespace Msg{
   
   //CMD
   template <>
-  struct IDof<CMD::CTR>{
-    static constexpr MsgType type = MsgType::CTR_CMD;
+  struct IDof<::CMD::CMD>{
+    static constexpr MsgType type = MsgType::CMD;
   };
-  template <>
-  struct IDof<CMD::PQ>{
-    static constexpr MsgType type = MsgType::PQ_CMD;
-  };
+  
   
   //Test
   template <>
