@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version='1.5'>
+  <model name="rocket_cone">
+    <link name='rocket_cone_link'>
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.001</iyy>
+          <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+      <velocity_decay>
+        <linear>0.01</linear>
+        <angular>0.005</angular>
+      </velocity_decay>
+      <collision name="rocket_cone_collision">
+        <geometry>
+          <cone>
+            <radius>0.07036</radius>
+            <length>0.3</length>
+          </cone>
+        </geometry>
+      </collision>
+      <visual name="rocket_cone_visual">
+        <geometry>
+          <cone>
+            <radius>0.07036</radius>
+            <length>0.3</length>
+          </cone>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

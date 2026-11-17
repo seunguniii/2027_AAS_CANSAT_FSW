@@ -1,0 +1,14 @@
+build/
+
+sdkconfig
+sdkconfig.old
+
+.vscode/
+.idea/
+
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+
+*.log

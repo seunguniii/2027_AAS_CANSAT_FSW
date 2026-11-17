@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version='1.8'>
+  <model name="container">
+    <link name="container_link">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.6</mass>
+        <inertia>
+          <ixx>0.002449</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>0.002449</iyy>
+          <iyz>0.0</iyz>
+          <izz>0.001287</izz>
+        </inertia>
+      </inertial>
+      <velocity_decay>
+        <linear>0.01</linear>
+        <angular>0.005</angular>
+      </velocity_decay>
+      <collision name="container_collision_wall_0">
+        <pose>0.0553647 0 0 0 0 1.57</pose>
+        <geometry>
+          <box>
+            <size>0.07 0.01 0.19</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e6</kp>
+              <kd>100.0</kd>
+              <max_vel>0.01</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <collision name="container_collision_wall_1">
+        <pose>0 0.0553647 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.07 0.01 0.19</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e6</kp>
+              <kd>100.0</kd>
+              <max_vel>0.01</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <collision name="container_collision_wall_2">
+        <pose>-0.0553647 0 0 0 0 1.57</pose>
+        <geometry>
+          <box>
+            <size>0.07 0.01 0.19</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e6</kp>
+              <kd>100.0</kd>
+              <max_vel>0.01</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <collision name="container_collision_wall_3">
+        <pose>0 -0.0553647 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.07 0.01 0.19</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e6</kp>
+              <kd>100.0</kd>
+              <max_vel>0.01</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual name="container_visual">
+        <geometry>
+          <cylinder>
+            <radius>0.0655</radius>
+            <length>0.19</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>0.175 0.175 0.175 1.0</ambient>
+          <diffuse>0.175 0.175 0.175 1.0</diffuse>
+        </material>
+      </visual>
+      
+      <sensor name="barometer" type="air_pressure">
+        <always_on>true</always_on>
+        <update_rate>20</update_rate>
+        <topic>/container/air_pressure</topic>
+        <air_pressure>
+          <pressure>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>1.0</stddev> <!-- 1 Pa resolution noise -->
+            </noise>
+          </pressure>
+        </air_pressure>
+      </sensor>
+      <sensor name="altimeter" type="altimeter">
+        <always_on>true</always_on>
+        <update_rate>20</update_rate>
+        <topic>/container/altimeter</topic>
+        <altimeter>
+          <vertical_position>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.1</stddev> <!-- 0.1m resolution noise -->
+            </noise>
+          </vertical_position>
+        </altimeter>
+      </sensor>
+    </link>
+    
+    <plugin
+      filename="gz-sim-pose-publisher-system"
+      name="gz::sim::systems::PosePublisher">
+      <publish_model_pose>true</publish_model_pose>
+      <publish_link_pose>false</publish_link_pose>
+      <use_pose_vector_msg>false</use_pose_vector_msg>
+      <update_frequency>50</update_frequency>
+    </plugin>
+    
+    <plugin
+      filename="gz-sim-detachable-joint-system"
+      name="gz::sim::systems::DetachableJoint">
+      <parent_link>container_link</parent_link>
+      <child_model>pocket_qube</child_model>
+      <child_link>pocket_qube_link</child_link>
+      <detach_topic>/rocket/pocket_qube/detach</detach_topic>
+    </plugin>
+    
+    <plugin filename="libPayloadEjection.so" name="cansat::PayloadEjection">
+      <payload_link_name>container_link</payload_link_name>
+      <detach_topic>/rocket/container/detach</detach_topic>
+      <trigger_mode>apogee</trigger_mode>
+      <min_altitude>20.0</min_altitude>
+      <apogee_drop_offset>1.0</apogee_drop_offset>
+      <force>45.75</force>
+      <duration>0.05</duration>
+    </plugin>
+    
+    <plugin filename="libParachute.so" name="cansat::Parachute">
+      <link_name>container_link</link_name>
+      <trigger_mode>apogee</trigger_mode>
+      <apogee_drop_offset>1.0</apogee_drop_offset>
+      <cd>0.082</cd>
+      <area>0.196</area> <!-- 50cm canopy -->
+      <tether_offset>0.15</tether_offset> <!-- above CoM -->
+      <angular_damping>0.95</angular_damping>
+    </plugin>
+  </model>
+</sdf>
