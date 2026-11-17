@@ -8,8 +8,9 @@ idf_component_register(
   INCLUDE_DIRS
     "include"
   REQUIRES
-    #msg
     system
     interface
+    utils
+    
     esp_timer
 )

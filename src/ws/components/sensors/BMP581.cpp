@@ -36,13 +36,7 @@ namespace Barometer{
         
     //sensor config
     std::cout << "[BMP581] Configuring sensor..." << std::endl;
-    //enable pressure reading
-    //pressure enabled = 0x40
-    //OSR_P            = 0x20
-    //OSR_T            = 0x04
-    //------------------------
-    uint8_t osr_config = 0x64;
-    if(!writeRegisters(REG_OSR_CONFIG, &osr_config, 1)) return false;
+    if(!writeRegisters(REG_OSR_CONFIG, &OSR_CONFIG, 1)) return false;
     std::cout << "[BMP581] OSR configured." << std::endl;
         
     //20hz normal

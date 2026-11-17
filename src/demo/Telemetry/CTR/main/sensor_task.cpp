@@ -32,8 +32,16 @@ namespace INIT{
     return true;
   }//bmp581
   
+  bool INA228(App::RuntimeContext& runtime){
+    if(!App::power_monitor.init(runtime.i2c_bus, 0x40)){
+      std::cout << TAG << " INA228 initialization failed." << std::endl;
+      return false;
+    }
+    std::cout << TAG << " INA228 initialized." << std::endl;
+    return true;
+  }
+  
   bool BNO085(){return true;} //TODO
-  bool INA228(){return true;} //TODO
   
   bool IR_LID(){return true;} //TODO
   bool IR_PQ(){return true;} //TODO
@@ -83,7 +91,12 @@ namespace App{
       }
          
       if(!init_imu && now >= next_imu_init_ms) init_imu = INIT::BNO085();
-      if(!init_power_monitor && now >= next_power_monitor_init_ms) init_power_monitor = INIT::INA228();
+      
+      if(!init_power_monitor && now >= next_power_monitor_init_ms) {
+        init_power_monitor = INIT::INA228(*runtime);
+        if(!init_power_monitor) next_power_monitor_init_ms = now + INIT_RETRY_INTERVAL_MS;
+      }
+      
       if(!init_ir_lid && now >= next_ir_lid_init_ms) init_ir_lid = INIT::IR_LID();
       if(!init_ir_pq && now >= next_ir_pq_init_ms) init_ir_pq = INIT::IR_PQ();
       if(!init_cam && now >= next_cam_init_ms) init_cam = INIT::OV2640();

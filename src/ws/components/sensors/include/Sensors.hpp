@@ -29,7 +29,9 @@ namespace Sensor{
     SensorHeader header;//		sensor header			5bytes
     float voltage;	//[V]		0.1V res			4bytes
     float current;	//[mA]		1mA res				4bytes
-  };			//		struct power monitor		13bytes
+    float shunt_voltage;//[V]		opt.				4bytes
+    float power;	//[W]		opt.				4bytes
+  };			//		struct power monitor		21bytes
   
   struct __attribute__((__packed__)) Magnetometer{
     SensorHeader header;//		sensor header			5bytes
@@ -76,6 +78,13 @@ namespace Barometer{
       //0x15 << 2 = 0x54
       static constexpr uint8_t ODR_CONFIG_20HZ_NORMAL = 0x55;
       
+      //enable pressure reading
+      //pressure enabled = 0x40
+      //OSR_P            = 0x20
+      //OSR_T            = 0x04
+      //------------------------
+      static constexpr uint8_t OSR_CONFIG = 0x64;
+      
       static constexpr uint32_t I2C_FREQ_HZ = 100000;
       
       bool readRegisters(uint8_t reg, uint8_t* data, size_t length);
@@ -91,9 +100,47 @@ namespace PowerMonitor{
     private:
       i2c_master_dev_handle_t device_handle = nullptr;
       
-      static constexpr uint8_t REG_CHIP_ID = 0x01;
-      static constexpr uint32_t I2C_FREQ_HZ = 100000;
+      static constexpr uint8_t DEFAULT_ADDRESS = 0x40;
+
+      //config regs
+      static constexpr uint8_t REG_CONFIG       = 0x00;
+      static constexpr uint8_t REG_ADC_CONFIG   = 0x01;
+      static constexpr uint8_t REG_SHUNT_CAL    = 0x02;
+
+      //measurement regs
+      static constexpr uint8_t REG_VSHUNT       = 0x04;
+      static constexpr uint8_t REG_VBUS         = 0x05;
+      static constexpr uint8_t REG_DIETEMP      = 0x06;
+      static constexpr uint8_t REG_CURRENT      = 0x07;
+      static constexpr uint8_t REG_POWER        = 0x08;
+
+      //id regs
+      static constexpr uint8_t REG_MANUFACTURER = 0x3E;
+      static constexpr uint8_t REG_DEVICE_ID    = 0x3F;
+
+      static constexpr uint16_t EXPECTED_MANUFACTURER_ID = 0x5449;
+      static constexpr uint16_t EXPECTED_DEVICE_ID      = 0x2281;
+
+      //shunt
+      static constexpr float SHUNT_RESISTANCE = 0.015f; // 15 mOhm
       
+      static constexpr float MAX_EXPECTED_CURRENT_A = 0.2f;
+      static constexpr float SHUNT_RESISTANCE_OHM = 0.015f;
+      
+      //ADC_CONFIG = 0xFB68
+      //MODE   = 0xF cont bus, shunt, temp
+      //VBUSCT = 0x5 1052us
+      //VSHCT  = 0x5 1052us
+      //VTCT   = 0x5 1052us
+      //AVG    = 0x0 1sample
+      //--------------------------
+      static constexpr uint16_t ADC_CONFIG_VALUE = 0xFB68;
+      
+      static constexpr uint32_t I2C_FREQ_HZ = 100000;
+      float current_lsb_A = 0.0f;
+
+      bool read16(uint8_t reg, uint16_t& value);
+      bool write16(uint8_t reg, uint16_t value);
       bool readRegisters(uint8_t reg, uint8_t* data, size_t length);
       bool writeRegisters(uint8_t reg, const uint8_t* data, size_t lenght);
   };
